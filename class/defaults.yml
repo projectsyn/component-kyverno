@@ -1,4 +1,15 @@
 parameters:
   kyverno:
-    =_metadata: {}
     namespace: syn-kyverno
+    images:
+      kyverno:
+        registry: ghcr.io
+        repository: kyverno/kyverno
+        version: v1.4.2
+      pre:
+        registry: ghcr.io
+        repository: kyverno/kyvernopre
+        version: ${kyverno:images:kyverno:version}
+    kyverno:
+      manifest_version: ${kyverno:images:kyverno:version}
+      manifest_url: https://github.com/kyverno/kyverno/tree/${kyverno:kyverno:manifest_version}/definitions
