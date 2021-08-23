@@ -12,4 +12,4 @@ parameters:
         version: ${kyverno:images:kyverno:version}
     kyverno:
       manifest_version: ${kyverno:images:kyverno:version}
-      manifest_url: https://github.com/kyverno/kyverno/tree/${kyverno:kyverno:manifest_version}/definitions
+      manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:kyverno:manifest_version}/definitions
