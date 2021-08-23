@@ -1,0 +1,7 @@
+:global:
+  componentName: kyverno
+  githubUrl: https://github.com/bastjan/component-kyverno
+
+docs/antora.yml:
+  name: kyverno
+  title: kyverno

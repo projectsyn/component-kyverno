@@ -1,0 +1,4 @@
+parameters:
+  kyverno:
+    =_metadata: {}
+    namespace: syn-kyverno
