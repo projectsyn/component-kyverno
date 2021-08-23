@@ -1,10 +1,36 @@
 parameters:
   kapitan:
+    dependencies:
+      - type: https
+        source: ${kyverno:kyverno:manifest_url}/crds/kyverno.io_generaterequests.yaml
+        output_path: dependencies/kyverno/definitions/crds/${kyverno:kyverno:manifest_version}/kyverno.io_generaterequests.yaml
+      - type: https
+        source: ${kyverno:kyverno:manifest_url}/crds/wgpolicyk8s.io_clusterpolicyreports.yaml
+        output_path: dependencies/kyverno/definitions/crds/${kyverno:kyverno:manifest_version}/wgpolicyk8s.io_clusterpolicyreports.yaml
+      - type: https
+        source: ${kyverno:kyverno:manifest_url}/crds/kyverno.io_clusterreportchangerequests.yaml
+        output_path: dependencies/kyverno/definitions/crds/${kyverno:kyverno:manifest_version}/kyverno.io_clusterreportchangerequests.yaml
+      - type: https
+        source: ${kyverno:kyverno:manifest_url}/crds/kyverno.io_reportchangerequests.yaml
+        output_path: dependencies/kyverno/definitions/crds/${kyverno:kyverno:manifest_version}/kyverno.io_reportchangerequests.yaml
+      - type: https
+        source: ${kyverno:kyverno:manifest_url}/crds/wgpolicyk8s.io_policyreports.yaml
+        output_path: dependencies/kyverno/definitions/crds/${kyverno:kyverno:manifest_version}/wgpolicyk8s.io_policyreports.yaml
+      - type: https
+        source: ${kyverno:kyverno:manifest_url}/crds/kyverno.io_clusterpolicies.yaml
+        output_path: dependencies/kyverno/definitions/crds/${kyverno:kyverno:manifest_version}/kyverno.io_clusterpolicies.yaml
+      - type: https
+        source: ${kyverno:kyverno:manifest_url}/crds/kyverno.io_policies.yaml
+        output_path: dependencies/kyverno/definitions/crds/${kyverno:kyverno:manifest_version}/kyverno.io_policies.yaml
     compile:
       - input_paths:
           - kyverno/component/app.jsonnet
         input_type: jsonnet
         output_path: apps/
+      - input_paths:
+          - kyverno/definitions/crds/${kyverno:kyverno:manifest_version}/
+        input_type: copy
+        output_path: kyverno/00_crds/
       - input_paths:
           - kyverno/component/main.jsonnet
         input_type: jsonnet
