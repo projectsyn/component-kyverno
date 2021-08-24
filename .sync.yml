@@ -1,6 +1,7 @@
 :global:
   componentName: kyverno
   githubUrl: https://github.com/projectsyn/component-kyverno
+  feature_goUnitTests: true
 
 docs/antora.yml:
   name: kyverno
