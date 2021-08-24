@@ -10,6 +10,29 @@ parameters:
         registry: ghcr.io
         repository: kyverno/kyvernopre
         version: ${kyverno:images:kyverno:version}
-    kyverno:
-      manifest_version: ${kyverno:images:kyverno:version}
-      manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:kyverno:manifest_version}/definitions
+
+    manifest_version: ${kyverno:images:kyverno:version}
+    manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:manifest_version}/definitions
+
+    resourceFilters:
+      - '[Event,*,*]'
+      - '[*,kube-system,*]'
+      - '[*,kube-public,*]'
+      - '[*,kube-node-lease,*]'
+      - '[Node,*,*]'
+      - '[APIService,*,*]'
+      - '[TokenReview,*,*]'
+      - '[SubjectAccessReview,*,*]'
+      - '[SelfSubjectAccessReview,*,*]'
+      - '[*,kyverno,*]'
+      - '[Binding,*,*]'
+      - '[ReplicaSet,*,*]'
+      - '[ReportChangeRequest,*,*]'
+      - '[ClusterReportChangeRequest,*,*]'
+      - '[PolicyReport,*,*]'
+      - '[ClusterPolicyReport,*,*]'
+    excludeGroupRole:
+      - system:serviceaccounts:kube-system
+      - system:nodes
+      - system:kube-scheduler
+    generateSuccessEvents: 'false'

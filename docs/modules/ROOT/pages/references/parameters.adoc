@@ -11,9 +11,43 @@ default:: `syn-kyverno`
 The namespace in which to deploy this component.
 
 
-== Example
+== `images`
 
-[source,yaml]
-----
-namespace: example-namespace
-----
+[horizontal]
+type:: dictionary
+
+Dictionary containing the container images used by this component.
+
+
+== `manifest_version`
+
+[horizontal]
+type:: string
+
+The version of the kyverno manifests to download.
+
+== `resourceFilters`
+
+[horizontal]
+type:: array
+
+The admission webhook checks if a policy is applicable on all admission requests.
+The Kubernetes kinds that shouldn't be processed.
+`resourceFilters` must be a sequence of one or more `[<Kind>,<Namespace>,<Name>]`` entries with `*` as a wildcard. Thus, an item `[Node,*,*]` means that admissions of kind Node in any namespace and with any name will be ignored. Wildcards are also supported in each of these sequences.
+
+For example, the sequence `[Pod,foo-system,redis*]` filters out kind Pod in namespace `foo-system` having names beginning with `redis`.
+
+== `excludeGroupRole`
+
+[horizontal]
+type:: array
+
+Exclude group roles from a user request.
+
+== `generateSuccessEvents`
+
+[horizontal]
+type:: string
+default:: `'false'`
+
+Specifies whether (`true`/`false`) to generate success events.
