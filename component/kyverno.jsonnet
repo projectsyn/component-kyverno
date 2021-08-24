@@ -18,7 +18,7 @@ local configmap = std.parseJson(kap.yaml_load(manifests_path + '/configmap.yaml'
 local objects = [] +
                 roles +
                 std.map(function(role_binding) role_binding {
-                  subjects: std.map(function(subj) {
+                  subjects: std.map(function(subj) subj {
                     namespace: params.namespace,
                   }, super.subjects),
                 }, role_bindings) +
