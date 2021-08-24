@@ -54,6 +54,9 @@ docs-serve: ## Preview the documentation
 .PHONY: test
 test: commodore_args = -f tests/$(instance).yml --search-paths ./dependencies
 test: .compile ## Compile the component
+	@echo
+	@echo
+	@cd tests && go test -count 1 ./...
 
 .PHONY: clean
 clean: ## Clean the project
