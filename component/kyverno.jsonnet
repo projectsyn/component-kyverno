@@ -25,7 +25,33 @@ local objects = [] +
                 services +
                 [
                   service_account {},
-                  deployment {},
+                  deployment {
+                    spec+: {
+                      template+: {
+                        spec+: {
+                          initContainers: [
+                            if c.name == 'kyverno-pre' then
+                              c {
+                                image: '%s/%s:%s' % [ params.images.pre.registry, params.images.pre.repository, params.images.pre.version ],
+                              }
+                            else
+                              c
+                            for c in super.initContainers
+                          ],
+                          containers: [
+                            if c.name == 'kyverno' then
+                              c {
+                                image: '%s/%s:%s' % [ params.images.kyverno.registry, params.images.kyverno.repository, params.images.kyverno.version ],
+                              }
+                            else
+                              c
+                            for c in super.containers
+                          ],
+                        },
+                      },
+                    },
+                  },
+
                   configmap {
                     data: {
                       resourceFilters: std.join('', std.prune(params.resourceFilters)),
@@ -37,7 +63,7 @@ local objects = [] +
 ;
 
 {
-  [std.asciiLower('02_%s-%s' % [ obj.kind, obj.metadata.name ])]: obj {
+  [std.asciiLower('02_%s-%s' % [ obj.kind, std.strReplace(obj.metadata.name, ':', '-') ])]: obj {
     metadata+: {
       namespace: params.namespace,
     },
