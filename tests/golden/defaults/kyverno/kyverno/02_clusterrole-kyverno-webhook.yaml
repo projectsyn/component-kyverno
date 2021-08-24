@@ -1,0 +1,46 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: kyverno
+  name: kyverno:webhook
+  namespace: syn-kyverno
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - events
+      - mutatingwebhookconfigurations
+      - validatingwebhookconfigurations
+      - certificatesigningrequests
+      - certificatesigningrequests/approval
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - certificates.k8s.io
+    resourceNames:
+      - kubernetes.io/legacy-unknown
+    resources:
+      - certificatesigningrequests
+      - certificatesigningrequests/approval
+      - certificatesigningrequests/status
+    verbs:
+      - create
+      - delete
+      - get
+      - update
+      - watch
+  - apiGroups:
+      - certificates.k8s.io
+    resourceNames:
+      - kubernetes.io/legacy-unknown
+    resources:
+      - signers
+    verbs:
+      - approve
