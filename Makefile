@@ -28,8 +28,8 @@ lint_jsonnet: $(JSONNET_FILES) ## Lint jsonnet files
 	$(JSONNET_DOCKER) $(JSONNETFMT_ARGS) --test -- $?
 
 .PHONY: lint_yaml
-lint_yaml: $(YAML_FILES) ## Lint yaml files
-	$(YAMLLINT_DOCKER) -f parsable -c $(YAMLLINT_CONFIG) $(YAMLLINT_ARGS) -- $?
+lint_yaml: ## Lint yaml files
+	$(YAMLLINT_DOCKER) -f parsable -c $(YAMLLINT_CONFIG) $(YAMLLINT_ARGS) -- .
 
 .PHONY: lint_adoc
 lint_adoc: ## Lint documentation
@@ -62,8 +62,8 @@ test: .compile ## Compile the component
 clean: ## Clean the project
 	rm -rf compiled dependencies vendor helmcharts jsonnetfile*.json || true
 
-.PHONY: diff-help
-diff-help:
+.PHONY: golden-diff-help
+golden-diff-help:
 	@echo "NOTE: if the 'golden-diff' target fails, review output and run:"
 	@echo "      $(MAKE) gen-golden golden-diff"
 	@echo
@@ -77,5 +77,5 @@ gen-golden: .compile
 
 .PHONY: golden-diff
 golden-diff: commodore_args = -f tests/$(instance).yml --search-paths ./dependencies
-golden-diff: .compile diff-help
+golden-diff: .compile golden-diff-help
 	@git diff --exit-code --minimal --no-index -- tests/golden/$(instance) compiled/
