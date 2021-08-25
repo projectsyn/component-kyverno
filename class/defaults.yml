@@ -1,4 +1,53 @@
 parameters:
   kyverno:
-    =_metadata: {}
     namespace: syn-kyverno
+    images:
+      kyverno:
+        registry: ghcr.io
+        repository: kyverno/kyverno
+        version: v1.4.2
+      pre:
+        registry: ghcr.io
+        repository: kyverno/kyvernopre
+        version: ${kyverno:images:kyverno:version}
+
+    resources:
+      kyverno:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 50Mi
+      pre:
+        limits:
+          cpu: 100m
+          memory: 256Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+
+    manifest_version: ${kyverno:images:kyverno:version}
+    manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:manifest_version}/definitions
+
+    resourceFilters:
+      - '[Event,*,*]'
+      - '[*,kube-system,*]'
+      - '[*,kube-public,*]'
+      - '[*,kube-node-lease,*]'
+      - '[Node,*,*]'
+      - '[APIService,*,*]'
+      - '[TokenReview,*,*]'
+      - '[SubjectAccessReview,*,*]'
+      - '[SelfSubjectAccessReview,*,*]'
+      - '[*,kyverno,*]'
+      - '[Binding,*,*]'
+      - '[ReplicaSet,*,*]'
+      - '[ReportChangeRequest,*,*]'
+      - '[ClusterReportChangeRequest,*,*]'
+      - '[PolicyReport,*,*]'
+      - '[ClusterPolicyReport,*,*]'
+    excludeGroupRole:
+      - system:serviceaccounts:kube-system
+      - system:nodes
+      - system:kube-scheduler
+    generateSuccessEvents: 'false'

@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: kyverno
+    rbac.authorization.k8s.io/aggregate-to-admin: 'true'
+  name: kyverno:admin-policyreport
+  namespace: syn-kyverno
+rules:
+  - apiGroups:
+      - wgpolicyk8s.io/v1alpha1
+    resources:
+      - policyreports
+      - clusterpolicyreports
+    verbs:
+      - '*'
