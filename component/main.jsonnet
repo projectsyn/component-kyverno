@@ -6,5 +6,12 @@ local inv = kap.inventory();
 local params = inv.parameters.kyverno;
 
 {
-  '01_namespace': kube.Namespace(params.namespace),
+  '01_namespace': kube.Namespace(params.namespace) {
+    metadata+: {
+      labels+: {
+        'network-policies.syn.tools/purge-defaults': 'true',
+        'network-policies.syn.tools/no-defaults': 'true',
+      },
+    },
+  },
 }
