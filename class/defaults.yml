@@ -11,6 +11,21 @@ parameters:
         repository: kyverno/kyvernopre
         version: ${kyverno:images:kyverno:version}
 
+    resources:
+      kyverno:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 50Mi
+      pre:
+        limits:
+          cpu: 100m
+          memory: 256Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+
     manifest_version: ${kyverno:images:kyverno:version}
     manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:manifest_version}/definitions
 

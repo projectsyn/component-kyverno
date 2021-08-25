@@ -33,6 +33,7 @@ local objects = [] +
                             if c.name == 'kyverno-pre' then
                               c {
                                 image: '%s/%s:%s' % [ params.images.pre.registry, params.images.pre.repository, params.images.pre.version ],
+                                resources: std.prune(super.resources + params.resources.pre),
                               }
                             else
                               c
@@ -42,6 +43,7 @@ local objects = [] +
                             if c.name == 'kyverno' then
                               c {
                                 image: '%s/%s:%s' % [ params.images.kyverno.registry, params.images.kyverno.repository, params.images.kyverno.version ],
+                                resources: std.prune(super.resources + params.resources.kyverno),
                               }
                             else
                               c
