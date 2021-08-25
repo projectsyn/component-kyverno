@@ -2,6 +2,7 @@
   componentName: kyverno
   githubUrl: https://github.com/projectsyn/component-kyverno
   feature_goUnitTests: true
+  feature_goldenTests: true
 
 docs/antora.yml:
   name: kyverno
