@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: kyverno
+  name: kyverno:userinfo
+  namespace: syn-kyverno
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - roles
+      - clusterroles
+      - rolebindings
+      - clusterrolebindings
+      - configmaps
+      - namespaces
+    verbs:
+      - watch
+      - list
