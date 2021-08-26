@@ -51,3 +51,5 @@ parameters:
       - system:nodes
       - system:kube-scheduler
     generateSuccessEvents: 'false'
+    # Pass extra args to the kyverno container
+    extraArgs: []

@@ -51,3 +51,18 @@ type:: string
 default:: `'false'`
 
 Specifies whether (`true`/`false`) to generate success events.
+
+== `extraArgs`
+
+[horizontal]
+type:: array
+default:: `[]`
+example::
++
+[source,yaml]
+----
+extraArgs:
+- -v=2
+----
+
+Allows passing extra arguments to Kyverno.
