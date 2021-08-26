@@ -19,9 +19,7 @@ spec:
         app.kubernetes.io/name: kyverno
     spec:
       containers:
-        - args:
-            - --filterK8sResources=[Event,*,*][*,kube-system,*][*,kube-public,*][*,kube-node-lease,*][Node,*,*][APIService,*,*][TokenReview,*,*][SubjectAccessReview,*,*][*,kyverno,*][Binding,*,*][ReplicaSet,*,*][ReportChangeRequest,*,*][ClusterReportChangeRequest,*,*][PolicyReport,*,*][ClusterPolicyReport,*,*]
-            - -v=2
+        - args: []
           env:
             - name: INIT_CONFIG
               value: init-config

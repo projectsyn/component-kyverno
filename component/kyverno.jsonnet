@@ -44,6 +44,7 @@ local objects = [] +
                               c {
                                 image: '%s/%s:%s' % [ params.images.kyverno.registry, params.images.kyverno.repository, params.images.kyverno.version ],
                                 resources: std.prune(super.resources + params.resources.kyverno),
+                                args: params.extraArgs,
                               }
                             else
                               c
