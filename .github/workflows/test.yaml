@@ -60,3 +60,14 @@ jobs:
           path: ${{ env.COMPONENT_NAME }}
       - name: Golden diff
         run: make golden-diff
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.COMPONENT_NAME }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ${{ env.COMPONENT_NAME }}
+      - name: Validate Kubernetes objects
+        run: make validate

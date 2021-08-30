@@ -24,6 +24,10 @@ YAMLLINT_CONFIG ?= .yamllint.yml
 YAMLLINT_IMAGE  ?= docker.io/cytopia/yamllint:latest
 YAMLLINT_DOCKER ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(root_volume) $(YAMLLINT_IMAGE)
 
+KUBEVAL_ARGS   ?= --ignore-missing-schemas
+KUBEVAL_IMAGE  ?= docker.io/cytopia/kubeval:latest
+KUBEVAL_DOCKER ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(root_volume) $(KUBEVAL_IMAGE)
+
 VALE_CMD  ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(root_volume) --volume "$${PWD}"/docs/modules:/pages vshn/vale:2.1.1
 VALE_ARGS ?= --minAlertLevel=error --config=/pages/ROOT/pages/.vale.ini /pages
 

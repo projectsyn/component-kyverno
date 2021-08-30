@@ -70,6 +70,13 @@ golden-diff: commodore_args = -f tests/$(instance).yml --search-paths ./dependen
 golden-diff: .compile ## Diff compile output against the reference version. Review output and run `make gen-golden golden-diff` if this target fails.
 	@git diff --exit-code --minimal --no-index -- tests/golden/$(instance) compiled/
 
+.PHONY: validate
+validate: commodore_args = -f tests/$(instance).yml --search-paths ./dependencies
+validate: .compile ## Validate the resulting Kubernetes objects using kubeval.
+	@echo
+	@echo
+	$(KUBEVAL_DOCKER) $(KUBEVAL_ARGS) -d compiled/
+
 .PHONY: clean
 clean: ## Clean the project
 	rm -rf compiled dependencies vendor helmcharts jsonnetfile*.json || true
