@@ -24,7 +24,7 @@ YAMLLINT_CONFIG ?= .yamllint.yml
 YAMLLINT_IMAGE  ?= docker.io/cytopia/yamllint:latest
 YAMLLINT_DOCKER ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(root_volume) $(YAMLLINT_IMAGE)
 
-KUBEVAL_ARGS   ?= --ignore-missing-schemas
+KUBEVAL_ARGS   ?= --ignore-missing-schemas --strict
 KUBEVAL_IMAGE  ?= docker.io/cytopia/kubeval:latest
 KUBEVAL_DOCKER ?= $(DOCKER_CMD) $(DOCKER_ARGS) $(root_volume) $(KUBEVAL_IMAGE)
 
