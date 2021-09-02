@@ -27,6 +27,7 @@ local objects = [] +
                   service_account {},
                   deployment {
                     spec+: {
+                      replicas: params.replicas,
                       template+: {
                         spec+: {
                           initContainers: [

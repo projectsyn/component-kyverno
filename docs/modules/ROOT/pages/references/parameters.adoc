@@ -119,3 +119,11 @@ See also `additionalClusterRoles` if the necessary `ClusterRole` doesn't exist.
 NOTE: The `metadata.name` is prefixed with `kyverno:user:` to avoid name clashes with existing resources.
 
 TIP: If you need to reference a `ClusterRole` defined in `additionalClusterRoles`, you need to prefix the role name with `kyverno:user:` as shown in the example.
+
+== `replicas`
+
+[horizontal]
+type:: int
+default:: `3`
+
+The amount of kyverno replicas. Three or more replicas are required for high availability.

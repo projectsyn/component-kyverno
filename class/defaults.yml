@@ -11,6 +11,11 @@ parameters:
         repository: kyverno/kyvernopre
         version: ${kyverno:images:kyverno:version}
 
+    manifest_version: ${kyverno:images:kyverno:version}
+    manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:manifest_version}/definitions
+
+    replicas: 3
+
     resources:
       kyverno:
         limits:
@@ -25,9 +30,6 @@ parameters:
         requests:
           cpu: 10m
           memory: 64Mi
-
-    manifest_version: ${kyverno:images:kyverno:version}
-    manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:manifest_version}/definitions
 
     resourceFilters:
       - '[Event,*,*]'
