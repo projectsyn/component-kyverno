@@ -1,4 +1,5 @@
 // main template for kyverno
+local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
 local inv = kap.inventory();
@@ -15,6 +16,23 @@ local services = std.parseJson(kap.yaml_load_stream(manifests_path + '/service.y
 local deployment = std.parseJson(kap.yaml_load(manifests_path + '/deployment.yaml'));
 local configmap = std.parseJson(kap.yaml_load(manifests_path + '/configmap.yaml'));
 
+
+local nodeSelectorConfig(role) =
+  if role == null then
+    {}
+  else
+    local label = 'node-role.kubernetes.io/%s' % role;
+    {
+      nodeSelector+: {
+        [label]: '',
+      },
+      tolerations+: [ {
+        key: label,
+        operator: 'Exists',
+        effect: 'NoSchedule',
+      } ],
+    };
+
 local objects = [] +
                 roles +
                 std.map(function(role_binding) role_binding {
@@ -29,7 +47,7 @@ local objects = [] +
                     spec+: {
                       replicas: params.replicas,
                       template+: {
-                        spec+: {
+                        spec+: com.makeMergeable({ affinity: params.affinity }) + nodeSelectorConfig(params.nodeSelectorRole) + {
                           initContainers: [
                             if c.name == 'kyverno-pre' then
                               c {

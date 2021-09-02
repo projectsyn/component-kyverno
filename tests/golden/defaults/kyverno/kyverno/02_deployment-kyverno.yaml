@@ -18,6 +18,18 @@ spec:
         app: kyverno
         app.kubernetes.io/name: kyverno
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - kyverno
+              topologyKey: kubernetes.io/hostname
+              weight: 100
       containers:
         - args: []
           env:
@@ -92,6 +104,12 @@ spec:
             privileged: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
+      nodeSelector:
+        node-role.kubernetes.io/master: ''
       securityContext:
         runAsNonRoot: true
       serviceAccountName: kyverno-service-account
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists

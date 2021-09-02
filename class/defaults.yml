@@ -16,6 +16,22 @@ parameters:
 
     replicas: 3
 
+    # One of 'master', 'infra', null
+    nodeSelectorRole: master
+
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - kyverno
+
     resources:
       kyverno:
         limits:

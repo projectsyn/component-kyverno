@@ -126,4 +126,23 @@ TIP: If you need to reference a `ClusterRole` defined in `additionalClusterRoles
 type:: int
 default:: `3`
 
-The amount of kyverno replicas. Three or more replicas are required for high availability.
+The amount of kyverno replicas.
+Three or more replicas are required for high availability.
+
+== `nodeSelectorRole`
+
+[horizontal]
+type:: enum
+values:: `master`, `infra`, `null`
+default:: `master`
+
+The node role to run Kyverno pods on.
+`null` equals no selector.
+
+== `affinity`
+
+[horizontal]
+type:: string
+
+Affinity configuration for the Kyverno pods.
+See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#affinity-v1-core

@@ -5,13 +5,20 @@ local inv = kap.inventory();
 // The hiera parameters for the component
 local params = inv.parameters.kyverno;
 
+local nodeSelectionNamespaceLabels = if params.nodeSelectorRole != null then
+  {
+    'openshift.io/node-selector': '',
+  }
+else
+  {};
+
 {
   '01_namespace': kube.Namespace(params.namespace) {
     metadata+: {
       labels+: {
         'network-policies.syn.tools/purge-defaults': 'true',
         'network-policies.syn.tools/no-defaults': 'true',
-      },
+      } + nodeSelectionNamespaceLabels,
     },
   },
 }
