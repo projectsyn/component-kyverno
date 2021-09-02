@@ -54,5 +54,6 @@ parameters:
       - input_paths:
           - kyverno/component/main.jsonnet
           - kyverno/component/kyverno.jsonnet
+          - kyverno/component/rolebindings.jsonnet
         input_type: jsonnet
         output_path: kyverno/

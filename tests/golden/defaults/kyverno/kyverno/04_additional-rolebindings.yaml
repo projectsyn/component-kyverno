@@ -1,0 +1,37 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/component: kyverno
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    name: user-allowManageRoleBindings
+  name: user:allowManageRoleBindings
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kyverno-user-my-name
+subjects:
+  - kind: ServiceAccount
+    name: kyverno-service-account
+    namespace: syn-kyverno
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/component: kyverno
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    name: user-cluster-admin
+  name: user:cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: kyverno-service-account
+    namespace: syn-kyverno

@@ -46,6 +46,8 @@ parameters:
       - '[ClusterReportChangeRequest,*,*]'
       - '[PolicyReport,*,*]'
       - '[ClusterPolicyReport,*,*]'
+    additionalClusterRoles: {}
+    additionalRoleBindings: {}
     excludeGroupRole:
       - system:serviceaccounts:kube-system
       - system:nodes
