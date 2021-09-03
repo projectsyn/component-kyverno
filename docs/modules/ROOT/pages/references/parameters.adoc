@@ -92,7 +92,7 @@ This is useful if you want to deploy Kyverno policies that generate resources, b
 
 See also `additionalRoleBindings` to bind the Kyverno ServiceAccount to the new roles.
 
-NOTE: The `metadata.name` is prefixed with `kyverno-user:` to avoid name clashes with existing resources.
+NOTE: The `metadata.name` is prefixed with `kyverno:user:` to avoid name clashes with existing resources.
 
 
 == `additionalRoleBindings`
@@ -106,7 +106,7 @@ example::
 ----
 allowManageRoleBindings: <1>
   kind: ClusterRole
-  name: kyverno-user:my-name <2>
+  name: kyverno:user:my-name <2>
 ----
 <1> This is the `metadata.name` of the RoleBinding.
 <2> The name of the Role or ClusterRole to bind to.
@@ -118,4 +118,4 @@ See also `additionalClusterRoles` if the necessary `ClusterRole` doesn't exist.
 
 NOTE: The `metadata.name` is prefixed with `user:` to avoid name clashes with existing resources.
 
-TIP: If you need to reference a `ClusterRole` defined in `additionalClusterRoles`, you need to prefix the role name with `kyverno-user:` as shown in the example.
+TIP: If you need to reference a `ClusterRole` defined in `additionalClusterRoles`, you need to prefix the role name with `kyverno:user:` as shown in the example.

@@ -11,7 +11,7 @@ local defaultLabels = {
 };
 
 local additionalClusterRoles = [
-  kube.ClusterRole('kyverno-user:%s' % [ role ],) {
+  kube.ClusterRole('kyverno:user:%s' % [ role ],) {
     metadata+: {
       labels+: defaultLabels,
     },
