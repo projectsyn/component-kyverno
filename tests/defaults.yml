@@ -13,7 +13,7 @@ parameters:
     additionalRoleBindings:
       allowManageRoleBindings:
         kind: ClusterRole
-        name: kyverno-user-my-name
-      cluster-admin:
+        name: kyverno-user:my-name
+      admin:
         kind: ClusterRole
-        name: cluster-admin
+        name: admin

@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/component: kyverno
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kyverno
-    name: user-allowManageRoleBindings
-  name: user:allowManageRoleBindings
+    name: user-admin
+  name: user:admin
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kyverno-user-my-name
+  name: admin
 subjects:
   - kind: ServiceAccount
     name: kyverno-service-account
@@ -25,12 +25,12 @@ metadata:
     app.kubernetes.io/component: kyverno
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kyverno
-    name: user-cluster-admin
-  name: user:cluster-admin
+    name: user-allowManageRoleBindings
+  name: user:allowManageRoleBindings
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin
+  name: kyverno-user:my-name
 subjects:
   - kind: ServiceAccount
     name: kyverno-service-account
