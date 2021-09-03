@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/component: kyverno
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    name: kyverno-user-my-name
+  name: kyverno-user:my-name
+rules:
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - rolebindings
+    verbs:
+      - '*'

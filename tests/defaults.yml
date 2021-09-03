@@ -1,3 +1,19 @@
 # Overwrite parameters here
 
-# parameters: {...}
+parameters:
+  kyverno:
+    additionalClusterRoles:
+      my-name:
+        - apiGroups:
+            - rbac.authorization.k8s.io
+          verbs:
+            - '*'
+          resources:
+            - rolebindings
+    additionalRoleBindings:
+      allowManageRoleBindings:
+        kind: ClusterRole
+        name: kyverno-user:my-name
+      admin:
+        kind: ClusterRole
+        name: admin
