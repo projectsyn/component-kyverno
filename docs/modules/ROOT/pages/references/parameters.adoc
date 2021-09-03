@@ -111,11 +111,11 @@ allowManageRoleBindings: <1>
 <1> This is the `metadata.name` of the RoleBinding.
 <2> The name of the Role or ClusterRole to bind to.
 
-Generates additional `RoleBinding` s in the Kyverno namespace for the Kyverno SystemAccount.
-This is useful if you want to deploy Kyverno policies that generate resources, but the Kyverno ServiceAccount might have insufficient RBAC permissions to do so.
+Generates additional `ClusterRoleBinding` s in the Kyverno namespace for the Kyverno SystemAccount.
+This is useful if you want to deploy Kyverno policies that generate resources in other namespaces, but the Kyverno ServiceAccount might have insufficient RBAC permissions to do so.
 
 See also `additionalClusterRoles` if the necessary `ClusterRole` doesn't exist.
 
-NOTE: The `metadata.name` is prefixed with `user:` to avoid name clashes with existing resources.
+NOTE: The `metadata.name` is prefixed with `kyverno:user:` to avoid name clashes with existing resources.
 
 TIP: If you need to reference a `ClusterRole` defined in `additionalClusterRoles`, you need to prefix the role name with `kyverno:user:` as shown in the example.

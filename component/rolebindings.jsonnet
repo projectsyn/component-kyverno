@@ -21,7 +21,7 @@ local additionalClusterRoles = [
 ];
 
 local additionalRoleBindings = [
-  kube.RoleBinding('user:%s' % [ binding ],) {
+  kube.ClusterRoleBinding('kyverno:user:%s' % [ binding ],) {
     metadata+: {
       labels+: defaultLabels,
     },
