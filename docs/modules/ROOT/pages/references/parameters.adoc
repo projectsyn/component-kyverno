@@ -133,9 +133,10 @@ Three or more replicas are required for high availability.
 
 [horizontal]
 type:: dict
-default:: `{maxUnavailable: 1}`
+default:: `{minAvailable: 1}`
 
 Limit the number of concurrent disruptions.
+Set `{minAvailable: 0}` to disable.
 
 == `nodeSelectorRole`
 
