@@ -1,0 +1,14 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  annotations: {}
+  labels:
+    name: kyverno
+  name: kyverno
+  namespace: syn-kyverno
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: kyverno
+      app.kubernetes.io/name: kyverno

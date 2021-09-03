@@ -16,6 +16,9 @@ parameters:
 
     replicas: 3
 
+    podDisruptionBudget:
+      maxUnavailable: 1
+
     # One of 'master', 'infra', null
     nodeSelectorRole: master
 

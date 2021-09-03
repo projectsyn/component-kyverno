@@ -81,6 +81,12 @@ local objects = [] +
                       generateSuccessEvents: params.generateSuccessEvents,
                     },
                   },
+
+                  kube.PodDisruptionBudget('kyverno') {
+                    spec+: {
+                      selector: deployment.spec.selector,
+                    } + params.podDisruptionBudget,
+                  },
                 ]
 ;
 

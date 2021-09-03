@@ -129,6 +129,14 @@ default:: `3`
 The amount of kyverno replicas.
 Three or more replicas are required for high availability.
 
+== `podDisruptionBudget`
+
+[horizontal]
+type:: dict
+default:: `{maxUnavailable: 1}`
+
+Limit the number of concurrent disruptions.
+
 == `nodeSelectorRole`
 
 [horizontal]
