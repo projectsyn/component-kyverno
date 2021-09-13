@@ -33,61 +33,62 @@ local nodeSelectorConfig(role) =
       } ],
     };
 
-local objects = [] +
-                roles +
-                std.map(function(role_binding) role_binding {
-                  subjects: std.map(function(subj) subj {
-                    namespace: params.namespace,
-                  }, super.subjects),
-                }, role_bindings) +
-                services +
-                [
-                  service_account {},
-                  deployment {
-                    spec+: {
-                      replicas: params.replicas,
-                      template+: {
-                        spec+: com.makeMergeable({ affinity: params.affinity }) + nodeSelectorConfig(params.nodeSelectorRole) + {
-                          initContainers: [
-                            if c.name == 'kyverno-pre' then
-                              c {
-                                image: '%s/%s:%s' % [ params.images.pre.registry, params.images.pre.repository, params.images.pre.version ],
-                                resources: std.prune(super.resources + params.resources.pre),
-                              }
-                            else
-                              c
-                            for c in super.initContainers
-                          ],
-                          containers: [
-                            if c.name == 'kyverno' then
-                              c {
-                                image: '%s/%s:%s' % [ params.images.kyverno.registry, params.images.kyverno.repository, params.images.kyverno.version ],
-                                resources: std.prune(super.resources + params.resources.kyverno),
-                                args: params.extraArgs,
-                              }
-                            else
-                              c
-                            for c in super.containers
-                          ],
-                        },
-                      },
-                    },
-                  },
+local objects =
+  [] +
+  roles +
+  std.map(function(role_binding) role_binding {
+    subjects: std.map(function(subj) subj {
+      namespace: params.namespace,
+    }, super.subjects),
+  }, role_bindings) +
+  services +
+  [
+    service_account {},
+    deployment {
+      spec+: {
+        replicas: params.replicas,
+        template+: {
+          spec+: com.makeMergeable({ affinity: params.affinity }) + nodeSelectorConfig(params.nodeSelectorRole) + {
+            initContainers: [
+              if c.name == 'kyverno-pre' then
+                c {
+                  image: '%s/%s:%s' % [ params.images.pre.registry, params.images.pre.repository, params.images.pre.version ],
+                  resources: std.prune(super.resources + params.resources.pre),
+                }
+              else
+                c
+              for c in super.initContainers
+            ],
+            containers: [
+              if c.name == 'kyverno' then
+                c {
+                  image: '%s/%s:%s' % [ params.images.kyverno.registry, params.images.kyverno.repository, params.images.kyverno.version ],
+                  resources: std.prune(super.resources + params.resources.kyverno),
+                  args: params.extraArgs,
+                }
+              else
+                c
+              for c in super.containers
+            ],
+          },
+        },
+      },
+    },
 
-                  configmap {
-                    data: {
-                      resourceFilters: std.join('', std.prune(params.resourceFilters)),
-                      excludeGroupRole: std.join(',', std.prune(params.excludeGroupRole)),
-                      generateSuccessEvents: params.generateSuccessEvents,
-                    },
-                  },
+    configmap {
+      data: {
+        resourceFilters: std.join('', std.prune(params.resourceFilters)),
+        excludeGroupRole: std.join(',', std.prune(params.excludeGroupRole)),
+        generateSuccessEvents: params.generateSuccessEvents,
+      },
+    },
 
-                  kube.PodDisruptionBudget('kyverno') {
-                    spec+: {
-                      selector: deployment.spec.selector,
-                    } + params.podDisruptionBudget,
-                  },
-                ]
+    kube.PodDisruptionBudget('kyverno') {
+      spec+: {
+        selector: deployment.spec.selector,
+      } + params.podDisruptionBudget,
+    },
+  ]
 ;
 
 {
