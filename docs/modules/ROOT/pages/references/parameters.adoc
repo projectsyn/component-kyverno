@@ -119,3 +119,41 @@ See also `additionalClusterRoles` if the necessary `ClusterRole` doesn't exist.
 NOTE: The `metadata.name` is prefixed with `kyverno:user:` to avoid name clashes with existing resources.
 
 TIP: If you need to reference a `ClusterRole` defined in `additionalClusterRoles`, you need to prefix the role name with `kyverno:user:` as shown in the example.
+
+== `replicas`
+
+[horizontal]
+type:: int
+default:: `3`
+
+The number of Kyverno replicas.
+Three or more replicas are https://github.com/kyverno/kyverno/releases/tag/v1.4.0[recommended] for high availability.
+
+== `podDisruptionBudget`
+
+[horizontal]
+type:: dict
+default:: `{minAvailable: 1}`
+
+Limit the number of concurrent disruptions.
+Set `{minAvailable: 0}` to disable.
+See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#poddisruptionbudget-v1-policy.
+`.spec.selector` is injected from the deployment.
+
+== `nodeSelectorRole`
+
+[horizontal]
+type:: enum
+values:: `master`, `infra`, `null`
+default:: `master`
+
+The node role to run Kyverno pods on.
+`null` equals no selector.
+
+== `affinity`
+
+[horizontal]
+type:: string
+
+Affinity configuration for the Kyverno pods.
+See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#affinity-v1-core

@@ -5,6 +5,13 @@ local inv = kap.inventory();
 // The hiera parameters for the component
 local params = inv.parameters.kyverno;
 
+local nodeSelectionNamespaceAnnotations = if params.nodeSelectorRole != null then
+  {
+    'openshift.io/node-selector': 'node-role.kubernetes.io/%s=' % params.nodeSelectorRole,
+  }
+else
+  {};
+
 {
   '01_namespace': kube.Namespace(params.namespace) {
     metadata+: {
@@ -12,6 +19,7 @@ local params = inv.parameters.kyverno;
         'network-policies.syn.tools/purge-defaults': 'true',
         'network-policies.syn.tools/no-defaults': 'true',
       },
+      annotations+: nodeSelectionNamespaceAnnotations,
     },
   },
 }

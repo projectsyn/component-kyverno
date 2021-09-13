@@ -7,7 +7,7 @@ metadata:
   name: kyverno
   namespace: syn-kyverno
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: kyverno
@@ -18,6 +18,16 @@ spec:
         app: kyverno
         app.kubernetes.io/name: kyverno
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - kyverno
+              topologyKey: kubernetes.io/hostname
       containers:
         - args: []
           env:
@@ -92,6 +102,12 @@ spec:
             privileged: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
+      nodeSelector:
+        node-role.kubernetes.io/master: ''
       securityContext:
         runAsNonRoot: true
       serviceAccountName: kyverno-service-account
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
