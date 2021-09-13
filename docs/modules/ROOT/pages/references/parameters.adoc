@@ -126,8 +126,8 @@ TIP: If you need to reference a `ClusterRole` defined in `additionalClusterRoles
 type:: int
 default:: `3`
 
-The amount of kyverno replicas.
-Three or more replicas are required for high availability.
+The number of Kyverno replicas.
+Three or more replicas are https://github.com/kyverno/kyverno/releases/tag/v1.4.0[recommended] for high availability.
 
 == `podDisruptionBudget`
 
@@ -137,6 +137,8 @@ default:: `{minAvailable: 1}`
 
 Limit the number of concurrent disruptions.
 Set `{minAvailable: 0}` to disable.
+See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#poddisruptionbudget-v1-policy.
+`.spec.selector` is injected from the deployment.
 
 == `nodeSelectorRole`
 
