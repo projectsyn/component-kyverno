@@ -7,7 +7,7 @@ local params = inv.parameters.kyverno;
 
 local nodeSelectionNamespaceLabels = if params.nodeSelectorRole != null then
   {
-    'openshift.io/node-selector': '',
+    'openshift.io/node-selector': 'node-role.kubernetes.io/%s=' % params.nodeSelectorRole,
   }
 else
   {};
