@@ -12,6 +12,11 @@ spec:
     matchLabels:
       app: kyverno
       app.kubernetes.io/name: kyverno
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 40%
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -33,13 +38,15 @@ spec:
           env:
             - name: INIT_CONFIG
               value: init-config
+            - name: METRICS_CONFIG
+              value: kyverno-metrics
             - name: KYVERNO_NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: KYVERNO_SVC
               value: kyverno-svc
-          image: ghcr.io/kyverno/kyverno:v1.4.2
+          image: ghcr.io/kyverno/kyverno:v1.5.1
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 2
@@ -47,7 +54,7 @@ spec:
               path: /health/liveness
               port: 9443
               scheme: HTTPS
-            initialDelaySeconds: 10
+            initialDelaySeconds: 15
             periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 5
@@ -84,7 +91,14 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
       initContainers:
-        - image: ghcr.io/kyverno/kyvernopre:v1.4.2
+        - env:
+            - name: METRICS_CONFIG
+              value: kyverno-metrics
+            - name: KYVERNO_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: ghcr.io/kyverno/kyvernopre:v1.5.1
           imagePullPolicy: IfNotPresent
           name: kyverno-pre
           resources:

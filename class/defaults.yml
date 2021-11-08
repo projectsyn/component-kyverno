@@ -5,7 +5,7 @@ parameters:
       kyverno:
         registry: ghcr.io
         repository: kyverno/kyverno
-        version: v1.4.2
+        version: v1.5.1
       pre:
         registry: ghcr.io
         repository: kyverno/kyvernopre

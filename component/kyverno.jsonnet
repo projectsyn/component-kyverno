@@ -48,7 +48,8 @@ local objects =
       spec+: {
         replicas: params.replicas,
         template+: {
-          spec+: com.makeMergeable({ affinity: params.affinity }) + nodeSelectorConfig(params.nodeSelectorRole) + {
+          spec+: nodeSelectorConfig(params.nodeSelectorRole) + {
+            affinity: params.affinity,
             initContainers: [
               if c.name == 'kyverno-pre' then
                 c {
