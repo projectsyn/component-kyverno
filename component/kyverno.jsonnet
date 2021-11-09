@@ -15,6 +15,7 @@ local service_account = std.parseJson(kap.yaml_load(manifests_path + '/serviceac
 local services = std.parseJson(kap.yaml_load_stream(manifests_path + '/service.yaml'));
 local deployment = std.parseJson(kap.yaml_load(manifests_path + '/deployment.yaml'));
 local configmap = std.parseJson(kap.yaml_load(manifests_path + '/configmap.yaml'));
+local metricsConfig = std.parseJson(kap.yaml_load(manifests_path + '/metricsconfigmap.yaml'));
 
 
 local nodeSelectorConfig(role) =
@@ -48,7 +49,8 @@ local objects =
       spec+: {
         replicas: params.replicas,
         template+: {
-          spec+: com.makeMergeable({ affinity: params.affinity }) + nodeSelectorConfig(params.nodeSelectorRole) + {
+          spec+: nodeSelectorConfig(params.nodeSelectorRole) + {
+            affinity: params.affinity,
             initContainers: [
               if c.name == 'kyverno-pre' then
                 c {
@@ -82,6 +84,8 @@ local objects =
         generateSuccessEvents: params.generateSuccessEvents,
       },
     },
+
+    metricsConfig,
 
     kube.PodDisruptionBudget('kyverno') {
       spec+: {

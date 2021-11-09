@@ -8,7 +8,7 @@ metadata:
   namespace: syn-kyverno
 rules:
   - apiGroups:
-      - wgpolicyk8s.io/v1alpha1
+      - wgpolicyk8s.io/v1alpha2
     resources:
       - policyreports
       - clusterpolicyreports
