@@ -42,6 +42,9 @@ parameters:
       - type: https
         source: ${kyverno:manifest_url}/k8s-resource/configmap.yaml
         output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/configmap.yaml
+      - type: https
+        source: ${kyverno:manifest_url}/k8s-resource/metricsconfigmap.yaml
+        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/metricsconfigmap.yaml
     compile:
       - input_paths:
           - kyverno/component/app.jsonnet
