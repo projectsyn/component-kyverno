@@ -1,4 +1,5 @@
 // main template for kyverno
+local common = import 'common.libsonnet';
 local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
@@ -99,6 +100,7 @@ local objects =
   [std.asciiLower('02_%s-%s' % [ obj.kind, std.strReplace(obj.metadata.name, ':', '-') ])]: obj {
     metadata+: {
       namespace: params.namespace,
+      labels+: common.Labels,
     },
   }
   for obj in objects

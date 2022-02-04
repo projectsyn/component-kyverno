@@ -19,6 +19,15 @@ type:: dictionary
 Dictionary containing the container images used by this component.
 
 
+== `monitoring.enabled`
+
+[horizontal]
+type:: boolean
+default:: `true`
+
+Controls if `ServiceMonitor` and `PrometheusRule` objects are created.
+
+
 == `manifest_version`
 
 [horizontal]

@@ -6,5 +6,8 @@ kind: ConfigMap
 metadata:
   labels:
     app: kyverno
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    app.kubernetes.io/part-of: syn
   name: kyverno-metrics
   namespace: syn-kyverno

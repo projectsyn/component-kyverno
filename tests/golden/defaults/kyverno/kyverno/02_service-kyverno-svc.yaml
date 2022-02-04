@@ -3,6 +3,9 @@ kind: Service
 metadata:
   labels:
     app: kyverno
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    app.kubernetes.io/part-of: syn
   name: kyverno-svc
   namespace: syn-kyverno
 spec:
