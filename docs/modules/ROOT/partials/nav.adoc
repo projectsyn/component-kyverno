@@ -1,2 +1,8 @@
 * xref:index.adoc[Home]
+
+.Alert runbooks
+* xref:runbooks/KyvernoAdmissionLatencyReachedWebhookTimeout.adoc[KyvernoAdmissionLatencyReachedWebhookTimeout]
+* xref:runbooks/KyvernoAverageAdmissionLatencyHigh.adoc[KyvernoAverageAdmissionLatencyHigh]
+
+.Technical reference
 * xref:references/parameters.adoc[Parameters]

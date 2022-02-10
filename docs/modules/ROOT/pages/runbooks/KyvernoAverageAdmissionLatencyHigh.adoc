@@ -1,0 +1,14 @@
+= Alert rule: KyvernoAverageAdmissionLatencyHigh
+
+include::partial$runbooks/contribution_note.adoc[]
+
+== icon:glasses[] Overview
+
+Kyverno average admission latency reached 5 seconds.
+Kubernetes object creation und updating is delayed.
+
+== icon:bug[] Steps for debugging
+
+* Check Kyverno memory and CPU usage / limits.
+* Check Kyverno logs
+* VSHN: Notify Tarazed

@@ -1,0 +1,14 @@
+= Alert rule: KyvernoAdmissionLatencyReachedWebhookTimeout
+
+include::partial$runbooks/contribution_note.adoc[]
+
+== icon:glasses[] Overview
+
+Kyverno average admission latency is higher than the webhook timeout.
+Creating or updating Kubernetes object failed because of the admission latency.
+
+== icon:bug[] Steps for debugging
+
+* Check Kyverno memory and CPU usage / limits.
+* Check Kyverno logs
+* VSHN: Notify Tarazed

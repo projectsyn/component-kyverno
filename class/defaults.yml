@@ -42,7 +42,7 @@ parameters:
             annotations:
               description: Kyverno admission latency for {{$labels.resouce_kind}}/{{$labels.resource_namespace}} higher than Kubernetes webhook timeout (10s).
               message: Kyverno admission latency higher than Kubernetes webhook timeout (10s).
-              runbook_url: https://hub.syn.tools/kyverno/runbooks/KyvernoPodAdmissionReachedWebhookTimeout.html
+              runbook_url: https://hub.syn.tools/kyverno/runbooks/KyvernoAdmissionLatencyReachedWebhookTimeout.html
               summary: Kyverno admission too slow.
             expr: |
               (
