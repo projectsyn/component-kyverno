@@ -22,8 +22,8 @@ spec:
             runbook_url: https://hub.syn.tools/kyverno/runbooks/KyvernoAdmissionLatencyReachedWebhookTimeout.html
             summary: Kyverno admission too slow.
           expr: "(\n  sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le=\"\
-            +Inf\"}[5m]))\n-\n  sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le=\"\
-            10\"}[5m]))\n) > 0\n"
+            +Inf\"}[10m]))\n-\n  sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le=\"\
+            10\"}[10m]))\n) > 0\n"
           for: 5m
           labels:
             severity: warning
