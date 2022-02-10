@@ -18,6 +18,41 @@ parameters:
 
     monitoring:
       enabled: true
+      alerts:
+        KyvernoAverageAdmissionLatencyHigh:
+          enabled: true
+          rule:
+            annotations:
+              description: Kyverno average admission latency for {{$labels.resouce_kind}} reached 5 seconds.
+              message: Kyverno average admission latency for {{$labels.resouce_kind}} reached 5 seconds in the last 10 minutes.
+              runbook_url: https://hub.syn.tools/kyverno/runbooks/KyvernoAverageAdmissionLatencyHigh.html
+              summary: Kyverno admission is slowing down.
+            expr: |
+              (
+                sum by (job,resource_kind) (rate(kyverno_admission_review_duration_seconds_sum[5m]))
+              /
+                sum by (job,resource_kind) (rate(kyverno_admission_review_duration_seconds_count[5m]))
+              ) > 5
+            for: 10m
+            labels:
+              severity: warning
+        KyvernoAdmissionLatencyReachedWebhookTimeout:
+          enabled: true
+          rule:
+            annotations:
+              description: Kyverno admission latency for {{$labels.resouce_kind}}/{{$labels.resource_namespace}} higher than Kubernetes webhook timeout (10s).
+              message: Kyverno admission latency higher than Kubernetes webhook timeout (10s).
+              runbook_url: https://hub.syn.tools/kyverno/runbooks/KyvernoPodAdmissionReachedWebhookTimeout.html
+              summary: Kyverno admission too slow.
+            expr: |
+              (
+                sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le="+Inf"}[5m]))
+              -
+                sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le="10"}[5m]))
+              ) > 0
+            for: 5m
+            labels:
+              severity: warning
 
     podDisruptionBudget:
       minAvailable: 1

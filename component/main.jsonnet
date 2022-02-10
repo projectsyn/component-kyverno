@@ -1,4 +1,5 @@
 // main template for kyverno
+local alerts = import 'alerts.libsonnet';
 local common = import 'common.libsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
