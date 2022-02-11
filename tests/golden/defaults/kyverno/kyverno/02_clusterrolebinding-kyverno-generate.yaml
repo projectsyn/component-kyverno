@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: syn
-  name: kyverno:generatecontroller
+  name: kyverno:generate
   namespace: syn-kyverno
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kyverno:generatecontroller
+  name: kyverno:generate
 subjects:
   - kind: ServiceAccount
     name: kyverno-service-account

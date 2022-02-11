@@ -5,14 +5,14 @@ parameters:
       kyverno:
         registry: ghcr.io
         repository: kyverno/kyverno
-        version: v1.5.1
+        version: v1.6.0
       pre:
         registry: ghcr.io
         repository: kyverno/kyvernopre
         version: ${kyverno:images:kyverno:version}
 
     manifest_version: ${kyverno:images:kyverno:version}
-    manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:manifest_version}/definitions
+    manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:manifest_version}/config
 
     replicas: 3
 
