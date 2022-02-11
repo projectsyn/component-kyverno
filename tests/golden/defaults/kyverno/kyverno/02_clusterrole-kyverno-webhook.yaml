@@ -10,13 +10,10 @@ metadata:
   namespace: syn-kyverno
 rules:
   - apiGroups:
-      - '*'
+      - admissionregistration.k8s.io
     resources:
-      - events
       - mutatingwebhookconfigurations
       - validatingwebhookconfigurations
-      - certificatesigningrequests
-      - certificatesigningrequests/approval
     verbs:
       - create
       - delete
@@ -25,25 +22,3 @@ rules:
       - patch
       - update
       - watch
-  - apiGroups:
-      - certificates.k8s.io
-    resourceNames:
-      - kubernetes.io/legacy-unknown
-    resources:
-      - certificatesigningrequests
-      - certificatesigningrequests/approval
-      - certificatesigningrequests/status
-    verbs:
-      - create
-      - delete
-      - get
-      - update
-      - watch
-  - apiGroups:
-      - certificates.k8s.io
-    resourceNames:
-      - kubernetes.io/legacy-unknown
-    resources:
-      - signers
-    verbs:
-      - approve

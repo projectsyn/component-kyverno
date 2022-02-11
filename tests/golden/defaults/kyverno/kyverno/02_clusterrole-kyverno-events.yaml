@@ -6,14 +6,15 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: syn
-    rbac.authorization.k8s.io/aggregate-to-admin: 'true'
-  name: kyverno:admin-policyreport
+  name: kyverno:events
   namespace: syn-kyverno
 rules:
   - apiGroups:
-      - wgpolicyk8s.io/v1alpha2
-    resources:
-      - policyreports
-      - clusterpolicyreports
-    verbs:
       - '*'
+    resources:
+      - events
+    verbs:
+      - create
+      - update
+      - patch
+      - delete

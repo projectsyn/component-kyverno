@@ -6,20 +6,16 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: syn
-  name: kyverno:customresources
+  name: kyverno:policies
   namespace: syn-kyverno
 rules:
   - apiGroups:
-      - '*'
+      - kyverno.io
     resources:
       - policies
       - policies/status
       - clusterpolicies
       - clusterpolicies/status
-      - policyreports
-      - policyreports/status
-      - clusterpolicyreports
-      - clusterpolicyreports/status
       - generaterequests
       - generaterequests/status
       - reportchangerequests
@@ -36,8 +32,18 @@ rules:
       - watch
       - deletecollection
   - apiGroups:
-      - apiextensions.k8s.io
+      - wgpolicyk8s.io
     resources:
-      - customresourcedefinitions
+      - policyreports
+      - policyreports/status
+      - clusterpolicyreports
+      - clusterpolicyreports/status
     verbs:
+      - create
       - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+      - deletecollection

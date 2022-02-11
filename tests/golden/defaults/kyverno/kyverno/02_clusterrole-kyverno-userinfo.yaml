@@ -10,14 +10,12 @@ metadata:
   namespace: syn-kyverno
 rules:
   - apiGroups:
-      - '*'
+      - rbac.authorization.k8s.io
     resources:
       - roles
       - clusterroles
       - rolebindings
       - clusterrolebindings
-      - configmaps
-      - namespaces
     verbs:
       - watch
       - list
