@@ -1,0 +1,22 @@
+= Alert rule: KyvernoAdmissionLatencyReachedWebhookTimeout
+
+include::partial$runbooks/contribution_note.adoc[]
+
+== icon:glasses[] Overview
+
+Kyverno average admission latency is higher than the webhook timeout.
+Creating or updating Kubernetes object failed because of the admission latency.
+
+== icon:bug[] Steps for debugging
+
+* Check Kyverno memory and CPU usage / limits.
+* Check Kyverno logs.
+** Check logs for client side throttling messages, such as:
++
+----
+I0211 08:07:25.200825       1 request.go:668] Waited for 1.197259946s due to client-side throttling, not priority and fairness, request: GET:https://172.30.0.1:443/apis/rbac.authorization.k8s.io/v1/namespaces/test-project-request/rolebindings/namespace-owner
+----
++
+If on Kyverno `1.6.0` or newer, increase `-clientRateLimitQPS` and `-clientRateLimitBurst` command line flags.
+The default QPS limit in the client is 5, 10 burst.
+* VSHN: Notify Tarazed
