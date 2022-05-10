@@ -9,8 +9,10 @@ local params = inv.parameters.kyverno;
 
 local manifests_path = 'kyverno/manifests/kyverno/' + params.manifest_version;
 
-local roles = std.parseJson(kap.yaml_load_stream(manifests_path + '/clusterroles.yaml'));
-local role_bindings = std.parseJson(kap.yaml_load_stream(manifests_path + '/clusterrolebindings.yaml'));
+local cluster_roles = std.parseJson(kap.yaml_load_stream(manifests_path + '/clusterroles.yaml'));
+local cluster_role_bindings = std.parseJson(kap.yaml_load_stream(manifests_path + '/clusterrolebindings.yaml'));
+local roles = std.parseJson(kap.yaml_load_stream(manifests_path + '/roles.yaml'));
+local role_bindings = std.parseJson(kap.yaml_load_stream(manifests_path + '/rolebindings.yaml'));
 local service_account = std.parseJson(kap.yaml_load(manifests_path + '/serviceaccount.yaml'));
 
 local services = std.parseJson(kap.yaml_load_stream(manifests_path + '/service.yaml'));
@@ -35,14 +37,26 @@ local nodeSelectorConfig(role) =
       } ],
     };
 
+local patchRoleBindings = function(bindings)
+  std.map(
+    function(role_binding)
+      role_binding {
+        subjects: std.map(
+          function(subj) subj {
+            namespace: params.namespace,
+          },
+          super.subjects
+        ),
+      },
+    bindings
+  );
+
 local objects =
   [] +
+  cluster_roles +
+  patchRoleBindings(cluster_role_bindings) +
   roles +
-  std.map(function(role_binding) role_binding {
-    subjects: std.map(function(subj) subj {
-      namespace: params.namespace,
-    }, super.subjects),
-  }, role_bindings) +
+  patchRoleBindings(role_bindings) +
   services +
   [
     service_account {},

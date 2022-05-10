@@ -1,0 +1,31 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app: kyverno
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    app.kubernetes.io/part-of: syn
+  name: kyverno:leaderelection
+  namespace: syn-kyverno
+rules:
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - create
+      - delete
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+      - watch

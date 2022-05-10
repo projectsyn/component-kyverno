@@ -37,6 +37,12 @@ parameters:
         source: ${kyverno:manifest_url}/k8s-resource/clusterrolebindings.yaml
         output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/clusterrolebindings.yaml
       - type: https
+        source: ${kyverno:manifest_url}/k8s-resource/roles.yaml
+        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/roles.yaml
+      - type: https
+        source: ${kyverno:manifest_url}/k8s-resource/rolebindings.yaml
+        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/rolebindings.yaml
+      - type: https
         source: ${kyverno:manifest_url}/k8s-resource/serviceaccount.yaml
         output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/serviceaccount.yaml
       - type: https
