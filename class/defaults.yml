@@ -16,6 +16,8 @@ parameters:
 
     replicas: 3
 
+    secrets: {}
+
     monitoring:
       enabled: true
       alerts:
