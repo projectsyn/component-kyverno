@@ -166,3 +166,28 @@ type:: string
 
 Affinity configuration for the Kyverno pods.
 See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#affinity-v1-core
+
+== `secrets`
+
+[horizontal]
+type:: dict
+default:: `{}`
+example::
++
+[source,yaml]
+----
+myregistry:
+  type: kubernetes.io/dockerconfigjson
+  stringData:
+    .dockerconfigjson: "?{vaultkv:t-my-tenant/c-my-cluster/kyverno/image_pullsecret}"
+----
+
+This parameter allows users to deploy arbitrary secrets.
+Each entry is transformed into a Secret resource.
+The key is used as the name of the resulting resource.
+The provided value is merged with an empty Secret resource.
+The component doesn't validate the provided secret configurations.
+
+Users can remove secrets configured higher-up in the hierarchy by setting the corresponding value to `null`.
+
+IMPORTANT: Always use `stringData` when using Vault references in secret configurations.

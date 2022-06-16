@@ -18,6 +18,12 @@ parameters:
         kind: ClusterRole
         name: admin
 
+    secrets:
+      myregistry:
+        type: kubernetes.io/dockerconfigjson
+        stringData:
+          .dockerconfigjson: "?{vaultkv:t-my-tenant/c-my-cluster/kyverno/image_pullsecret}"
+
   kapitan:
     dependencies:
       - type: https
