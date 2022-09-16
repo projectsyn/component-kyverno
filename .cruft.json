@@ -1,17 +1,17 @@
 {
   "template": "https://github.com/projectsyn/commodore-component-template.git",
-  "commit": "a700b9ffffa95d9a9f2ab7e9101d4fe8887a0343",
+  "commit": "32f6976d3a3028d3fdb34ea312454f2ea7fda4a2",
   "checkout": "main",
   "context": {
     "cookiecutter": {
       "name": "kyverno",
       "slug": "kyverno",
       "parameter_key": "kyverno",
-      "test_cases": "defaults",
+      "test_cases": "defaults policies",
       "add_lib": "y",
       "add_pp": "n",
       "add_golden": "y",
-      "add_matrix": "n",
+      "add_matrix": "y",
       "add_go_unit": "y",
       "copyright_holder": "VSHN AG <info@vshn.ch>",
       "copyright_year": "2021",

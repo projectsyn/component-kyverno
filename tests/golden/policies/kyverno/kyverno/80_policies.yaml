@@ -1,0 +1,28 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    app.kubernetes.io/part-of: syn
+    name: another-policy
+  name: another-policy
+spec:
+  foo: bar
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/title: Example Policy
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    app.kubernetes.io/part-of: syn
+    name: test-policy
+  name: test-policy
+  spec:
+    background: true
+    validationFailureAction: enforce

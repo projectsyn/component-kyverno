@@ -19,6 +19,33 @@ type:: dictionary
 Dictionary containing the container images used by this component.
 
 
+== `clusterpolicies`
+
+[horizontal]
+type:: dictionary
+default:: `{}`
+example::
++
+[source,yaml]
+----
+clusterpolicies:
+  restrict-registries:  # <1>
+    metadata:
+      annotations:
+        policies.kyverno.io/title: Example Policy
+        policies.kyverno.io/subject: Pod
+      spec:
+        validationFailureAction: enforce
+        background: true
+        rules:
+          - ...
+----
+<1> Key will be used as the default value for `metadata.name`
+
+Dictionary containing `ClusterPolicy.kyverno.io/v1` objects to be managed.
+Previously defined policies can be removed by setting `policy-name: null` in the dictionary.
+
+
 == `monitoring.enabled`
 
 [horizontal]

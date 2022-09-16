@@ -18,6 +18,8 @@ parameters:
 
     secrets: {}
 
+    clusterpolicies: {}
+
     monitoring:
       enabled: true
       alerts:
