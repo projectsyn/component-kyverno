@@ -1,0 +1,22 @@
+---
+parameters:
+  kyverno:
+    clusterpolicies:
+      test-policy:
+        metadata:
+          annotations:
+            policies.kyverno.io/title: Example Policy
+            policies.kyverno.io/subject: Pod
+          spec:
+            validationFailureAction: enforce
+            background: true
+      another-policy:
+        spec:
+          foo: bar
+
+  # Required for the tests to run
+  kapitan:
+    dependencies:
+      - type: https
+        source: https://raw.githubusercontent.com/appuio/component-openshift4-monitoring/v1.9.2/lib/prom.libsonnet
+        output_path: vendor/lib/prom.libsonnet
