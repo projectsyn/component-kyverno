@@ -6,6 +6,9 @@ parameters:
         source: ${kyverno:manifest_url}/crds/kyverno.io_generaterequests.yaml
         output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/kyverno.io_generaterequests.yaml
       - type: https
+        source: ${kyverno:manifest_url}/crds/kyverno.io_updaterequests.yaml
+        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/kyverno.io_updaterequests.yaml
+      - type: https
         source: ${kyverno:manifest_url}/crds/wgpolicyk8s.io_clusterpolicyreports.yaml
         output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/wgpolicyk8s.io_clusterpolicyreports.yaml
       - type: https
