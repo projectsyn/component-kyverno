@@ -1,25 +1,13 @@
-// main template for kyverno
-local common = import 'common.libsonnet';
+// Template to render kustomization overlay
 local com = import 'lib/commodore.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
+
 local kube = import 'lib/kube.libjsonnet';
+
+local common = import 'common.libsonnet';
+
 local inv = kap.inventory();
-// The hiera parameters for the component
 local params = inv.parameters.kyverno;
-
-local manifests_path = 'kyverno/manifests/kyverno/' + params.manifest_version;
-
-local cluster_roles = std.parseJson(kap.yaml_load_stream(manifests_path + '/clusterroles.yaml'));
-local cluster_role_bindings = std.parseJson(kap.yaml_load_stream(manifests_path + '/clusterrolebindings.yaml'));
-local roles = std.parseJson(kap.yaml_load_stream(manifests_path + '/roles.yaml'));
-local role_bindings = std.parseJson(kap.yaml_load_stream(manifests_path + '/rolebindings.yaml'));
-local service_account = std.parseJson(kap.yaml_load(manifests_path + '/serviceaccount.yaml'));
-
-local services = std.parseJson(kap.yaml_load_stream(manifests_path + '/service.yaml'));
-local deployment = std.parseJson(kap.yaml_load(manifests_path + '/deployment.yaml'));
-local configmap = std.parseJson(kap.yaml_load(manifests_path + '/configmap.yaml'));
-local metricsConfig = std.parseJson(kap.yaml_load(manifests_path + '/metricsconfigmap.yaml'));
-
 
 local nodeSelectorConfig(role) =
   if role == null then
@@ -37,85 +25,79 @@ local nodeSelectorConfig(role) =
       } ],
     };
 
-local patchRoleBindings = function(bindings)
-  std.map(
-    function(role_binding)
-      role_binding {
-        subjects: std.map(
-          function(subj) subj {
-            namespace: params.namespace,
-          },
-          super.subjects
-        ),
-      },
-    bindings
-  );
+local isOpenshift = std.startsWith(inv.parameters.facts.distribution, 'openshift');
 
-local objects =
-  [] +
-  cluster_roles +
-  patchRoleBindings(cluster_role_bindings) +
-  roles +
-  patchRoleBindings(role_bindings) +
-  services +
-  [
-    service_account {},
-    deployment {
-      spec+: {
-        replicas: params.replicas,
-        template+: {
-          spec+: nodeSelectorConfig(params.nodeSelectorRole) + {
+local monitoringLabel =
+  if isOpenshift then
+    {
+      'openshift.io/cluster-monitoring': 'true',
+    }
+  else
+    {
+      SYNMonitoring: 'main',
+    };
+
+local nodeSelectionNamespaceAnnotations = if params.nodeSelectorRole != null then
+  {
+    'openshift.io/node-selector': 'node-role.kubernetes.io/%s=' % params.nodeSelectorRole,
+  }
+else
+  {};
+
+com.Kustomization(
+  params.kustomization_url,
+  params.manifest_version,
+  {},
+  {
+    namespace: params.namespace,
+    replicas: [
+      {
+        name: 'kyverno',
+        count: params.replicas,
+      },
+    ],
+    patchesStrategicMerge: [
+      'deployment.yaml',
+      'namespace.yaml',
+    ],
+  },
+) {
+  // We need to patch namespace "kyverno" as the namespace renaming is only applied after doing strategic merge patches
+  deployment: kube.Deployment('kyverno') {
+    spec: {
+      template: {
+        spec:
+          nodeSelectorConfig(params.nodeSelectorRole)
+          +
+          {
             affinity: params.affinity,
+          }
+          {
             initContainers: [
-              if c.name == 'kyverno-pre' then
-                c {
-                  image: '%s/%s:%s' % [ params.images.pre.registry, params.images.pre.repository, params.images.pre.version ],
-                  resources: std.prune(super.resources + params.resources.pre),
-                }
-              else
-                c
-              for c in super.initContainers
+              {
+                name: 'kyverno-pre',
+                resources: params.resources.pre,
+              },
             ],
             containers: [
-              if c.name == 'kyverno' then
-                c {
-                  image: '%s/%s:%s' % [ params.images.kyverno.registry, params.images.kyverno.repository, params.images.kyverno.version ],
-                  resources: std.prune(super.resources + params.resources.kyverno),
-                  args: params.extraArgs,
-                }
-              else
-                c
-              for c in super.containers
+              {
+                name: 'kyverno',
+                resources: params.resources.kyverno,
+                args: params.extraArgs,
+              },
             ],
           },
-        },
       },
     },
-
-    configmap {
-      data: {
-        resourceFilters: std.join('', std.prune(params.resourceFilters)),
-        excludeGroupRole: std.join(',', std.prune(params.excludeGroupRole)),
-        generateSuccessEvents: params.generateSuccessEvents,
-      },
-    },
-
-    metricsConfig,
-
-    kube.PodDisruptionBudget('kyverno') {
-      spec+: {
-        selector: deployment.spec.selector,
-      } + params.podDisruptionBudget,
-    },
-  ]
-;
-
-{
-  [std.asciiLower('02_%s-%s' % [ obj.kind, std.strReplace(obj.metadata.name, ':', '-') ])]: obj {
+  },
+  namespace: kube.Namespace('kyverno') {
     metadata+: {
-      namespace: params.namespace,
-      labels+: common.Labels,
+      labels+: common.Labels + monitoringLabel {
+        'network-policies.syn.tools/purge-defaults': 'true',
+        'network-policies.syn.tools/no-defaults': 'true',
+        name: params.namespace,
+      },
+      annotations+: nodeSelectionNamespaceAnnotations,
     },
-  }
-  for obj in objects
+  },
 }

@@ -12,7 +12,7 @@ parameters:
         version: ${kyverno:images:kyverno:version}
 
     manifest_version: ${kyverno:images:kyverno:version}
-    manifest_url: https://raw.githubusercontent.com/kyverno/kyverno/${kyverno:manifest_version}/config
+    kustomization_url: https://github.com/kyverno/kyverno//config
 
     replicas: 3
 
@@ -59,6 +59,10 @@ parameters:
               severity: warning
 
     podDisruptionBudget:
+      selector:
+        matchLabels:
+          app: kyverno
+          app.kubernetes.io/name: kyverno
       minAvailable: 1
 
     # One of 'master', 'infra', null
@@ -66,6 +70,7 @@ parameters:
 
     affinity:
       podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
         requiredDuringSchedulingIgnoredDuringExecution:
           - topologyKey: kubernetes.io/hostname
             labelSelector:

@@ -1,73 +1,36 @@
 parameters:
   kapitan:
-    dependencies:
-      # CRDs
-      - type: https
-        source: ${kyverno:manifest_url}/crds/kyverno.io_generaterequests.yaml
-        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/kyverno.io_generaterequests.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/crds/kyverno.io_updaterequests.yaml
-        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/kyverno.io_updaterequests.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/crds/wgpolicyk8s.io_clusterpolicyreports.yaml
-        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/wgpolicyk8s.io_clusterpolicyreports.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/crds/kyverno.io_clusterreportchangerequests.yaml
-        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/kyverno.io_clusterreportchangerequests.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/crds/kyverno.io_reportchangerequests.yaml
-        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/kyverno.io_reportchangerequests.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/crds/wgpolicyk8s.io_policyreports.yaml
-        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/wgpolicyk8s.io_policyreports.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/crds/kyverno.io_clusterpolicies.yaml
-        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/kyverno.io_clusterpolicies.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/crds/kyverno.io_policies.yaml
-        output_path: dependencies/kyverno/manifests/crds/${kyverno:manifest_version}/kyverno.io_policies.yaml
-      # Kyverno
-      - type: https
-        source: ${kyverno:manifest_url}/manifest/deployment.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/deployment.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/k8s-resource/service.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/service.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/k8s-resource/clusterroles.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/clusterroles.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/k8s-resource/clusterrolebindings.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/clusterrolebindings.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/k8s-resource/roles.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/roles.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/k8s-resource/rolebindings.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/rolebindings.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/k8s-resource/serviceaccount.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/serviceaccount.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/k8s-resource/configmap.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/configmap.yaml
-      - type: https
-        source: ${kyverno:manifest_url}/k8s-resource/metricsconfigmap.yaml
-        output_path: dependencies/kyverno/manifests/kyverno/${kyverno:manifest_version}/metricsconfigmap.yaml
     compile:
       - input_paths:
           - kyverno/component/app.jsonnet
         input_type: jsonnet
         output_path: apps/
+
+      # render kustomization overlay
       - input_paths:
-          - kyverno/manifests/crds/${kyverno:manifest_version}/
-        input_type: copy
-        output_path: kyverno/00_crds/
+          - ${_base_directory}/component/kyverno.jsonnet
+        input_type: jsonnet
+        output_path: ${_base_directory}/kyverno
+
+      - input_type: external
+        output_path: .
+        input_paths:
+          - ${_kustomize_wrapper}
+        env_vars:
+          INPUT_DIR: ${_base_directory}/kyverno
+        args:
+          - \${compiled_target_dir}/${_instance}/kyverno
+
+      - input_paths:
+          - ${_base_directory}/kyverno
+        input_type: remove
+        output_path: .
+
       - input_paths:
           - kyverno/component/main.jsonnet
-          - kyverno/component/kyverno.jsonnet
           - kyverno/component/rolebindings.jsonnet
           - kyverno/component/monitoring.jsonnet
           - kyverno/component/policies.jsonnet
+          - kyverno/component/poddisruptionbudget.jsonnet
         input_type: jsonnet
         output_path: kyverno/
