@@ -15,6 +15,6 @@ roleRef:
   kind: Role
   name: kyverno:leaderelection
 subjects:
-  - kind: ServiceAccount
-    name: kyverno-service-account
-    namespace: syn-kyverno
+- kind: ServiceAccount
+  name: kyverno-service-account
+  namespace: syn-kyverno

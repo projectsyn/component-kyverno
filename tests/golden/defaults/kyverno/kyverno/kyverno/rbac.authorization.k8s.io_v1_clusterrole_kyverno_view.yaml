@@ -10,11 +10,11 @@ metadata:
     app.kubernetes.io/version: v1.7.4
   name: kyverno:view
 rules:
-  - apiGroups:
-      - '*'
-    resources:
-      - '*'
-    verbs:
-      - get
-      - list
-      - watch
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch

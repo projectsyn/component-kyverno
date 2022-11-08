@@ -11,15 +11,15 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
   name: kyverno:admin-generaterequest
 rules:
-  - apiGroups:
-      - kyverno.io
-    resources:
-      - generaterequests
-    verbs:
-      - create
-      - delete
-      - get
-      - list
-      - patch
-      - update
-      - watch
+- apiGroups:
+  - kyverno.io
+  resources:
+  - generaterequests
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch

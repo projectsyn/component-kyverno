@@ -10,13 +10,13 @@ metadata:
     app.kubernetes.io/version: v1.7.4
   name: kyverno:userinfo
 rules:
-  - apiGroups:
-      - rbac.authorization.k8s.io
-    resources:
-      - roles
-      - clusterroles
-      - rolebindings
-      - clusterrolebindings
-    verbs:
-      - watch
-      - list
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - roles
+  - clusterroles
+  - rolebindings
+  - clusterrolebindings
+  verbs:
+  - watch
+  - list

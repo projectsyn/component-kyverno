@@ -12,9 +12,9 @@ metadata:
   namespace: syn-kyverno
 spec:
   ports:
-    - name: https
-      port: 443
-      targetPort: https
+  - name: https
+    port: 443
+    targetPort: https
   selector:
     app: kyverno
     app.kubernetes.io/name: kyverno
