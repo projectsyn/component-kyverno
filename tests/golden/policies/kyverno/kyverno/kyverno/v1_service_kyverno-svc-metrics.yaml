@@ -12,9 +12,9 @@ metadata:
   namespace: syn-kyverno
 spec:
   ports:
-  - name: metrics-port
-    port: 8000
-    targetPort: metrics-port
+    - name: metrics-port
+      port: 8000
+      targetPort: metrics-port
   selector:
     app: kyverno
     app.kubernetes.io/name: kyverno

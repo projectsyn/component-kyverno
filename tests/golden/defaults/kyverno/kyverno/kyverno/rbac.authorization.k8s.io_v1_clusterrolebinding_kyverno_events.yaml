@@ -14,6 +14,6 @@ roleRef:
   kind: ClusterRole
   name: kyverno:events
 subjects:
-- kind: ServiceAccount
-  name: kyverno-service-account
-  namespace: syn-kyverno
+  - kind: ServiceAccount
+    name: kyverno-service-account
+    namespace: syn-kyverno
