@@ -47,7 +47,16 @@ else
 com.Kustomization(
   params.kustomization_url,
   params.manifest_version,
-  {},
+  {
+    'ghcr.io/kyverno/kyverno': {
+      newTag: params.images.kyverno.version,
+      newName: '%(registry)s/%(repository)s' % params.images.kyverno,
+    },
+    'ghcr.io/kyverno/kyvernopre': {
+      newTag: params.images.pre.version,
+      newName: '%(registry)s/%(repository)s' % params.images.pre,
+    },
+  },
   {
     namespace: params.namespace,
     replicas: [
