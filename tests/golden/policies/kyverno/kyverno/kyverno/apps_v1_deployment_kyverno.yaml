@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/instance: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: v1.7.4
+    app.kubernetes.io/version: v1.8.1
     name: kyverno
   name: kyverno
   namespace: syn-kyverno
@@ -30,7 +30,7 @@ spec:
         app.kubernetes.io/instance: kyverno
         app.kubernetes.io/name: kyverno
         app.kubernetes.io/part-of: kyverno
-        app.kubernetes.io/version: v1.7.4
+        app.kubernetes.io/version: v1.8.1
     spec:
       affinity:
         podAntiAffinity:
@@ -62,7 +62,7 @@ spec:
           value: kyverno-svc
         - name: TUF_ROOT
           value: /.sigstore
-        image: ghcr.io/kyverno/kyverno:v1.7.4
+        image: ghcr.io/kyverno/kyverno:v1.8.1
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 2
@@ -106,6 +106,16 @@ spec:
           privileged: false
           readOnlyRootFilesystem: true
           runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        startupProbe:
+          failureThreshold: 12
+          httpGet:
+            path: /health/liveness
+            port: 9443
+            scheme: HTTPS
+          initialDelaySeconds: 30
+          periodSeconds: 10
         volumeMounts:
         - mountPath: /.sigstore
           name: sigstore
@@ -113,11 +123,15 @@ spec:
       - env:
         - name: METRICS_CONFIG
           value: kyverno-metrics
+        - name: KYVERNO_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         - name: KYVERNO_NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/kyverno/kyvernopre:v1.7.4
+        image: ghcr.io/kyverno/kyvernopre:v1.8.1
         imagePullPolicy: Always
         name: kyverno-pre
         resources:
@@ -135,6 +149,8 @@ spec:
           privileged: false
           readOnlyRootFilesystem: true
           runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
       nodeSelector:
         node-role.kubernetes.io/master: ""
       securityContext:
