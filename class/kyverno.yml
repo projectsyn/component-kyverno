@@ -21,6 +21,17 @@ parameters:
         args:
           - \${compiled_target_dir}/${_instance}/kyverno
 
+      # Rename all files with a ":".
+      # This is necessary as otherwise commodore will not be able to render the diff.
+      # Caused by a bug in gitpython 3.1.24.
+      # Can be removed one gitpython is update to 3.1.28
+      - input_type: external
+        output_path: .
+        input_paths:
+          - kyverno/fix-rolenames
+        args:
+          - \${compiled_target_dir}/${_instance}/kyverno
+
       - input_paths:
           - ${_base_directory}/kyverno
         input_type: remove
