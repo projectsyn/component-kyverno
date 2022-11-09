@@ -71,7 +71,6 @@ com.Kustomization(
     ],
   },
 ) {
-  // We need to patch namespace "kyverno" as the namespace renaming is only applied after doing strategic merge patches
   deployment: kube.Deployment('kyverno') {
     spec: {
       template: {
@@ -99,6 +98,7 @@ com.Kustomization(
       },
     },
   },
+  // We need to patch namespace "kyverno" as the namespace renaming is only applied after doing strategic merge patches
   namespace: kube.Namespace('kyverno') {
     metadata+: {
       labels+: common.Labels + monitoringLabel {
