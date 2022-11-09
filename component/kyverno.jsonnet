@@ -65,6 +65,9 @@ com.Kustomization(
         count: params.replicas,
       },
     ],
+    transformers: [
+      'labels.yaml',
+    ],
     patchesStrategicMerge: [
       'deployment.yaml',
       'namespace.yaml',
@@ -108,5 +111,26 @@ com.Kustomization(
       },
       annotations+: nodeSelectionNamespaceAnnotations,
     },
+  },
+  labels: {
+    apiVersion: 'builtin',
+    kind: 'LabelTransformer',
+    metadata: {
+      name: 'labelTransformer',
+    },
+    labels: {
+      'app.kubernetes.io/version': params.manifest_version,
+    },
+    fieldSpecs: [
+      {
+        path: 'metadata/labels',
+        create: true,
+      },
+      {
+        kind: 'Deployment',
+        path: 'spec/template/metadata/labels',
+        create: true,
+      },
+    ],
   },
 }
