@@ -1,0 +1,24 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations: {}
+  labels:
+    name: foo-test-5f124f8af545124
+  name: foo-test-5f124f8af545124
+spec:
+  rules:
+    - match:
+        all:
+          - resources:
+              kinds:
+                - rbac.authorization.k8s.io/v1/ClusterRoleBinding
+              names:
+                - test
+              namespaces:
+                - foo
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              patched: ''
+      name: foo-test-5f124f8af545124

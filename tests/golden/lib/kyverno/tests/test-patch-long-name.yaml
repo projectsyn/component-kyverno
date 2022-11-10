@@ -1,0 +1,21 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations: {}
+  labels:
+    name: clusterrolebinding-system-build-7d296671e024f88
+  name: clusterrolebinding-system-build-7d296671e024f88
+spec:
+  rules:
+    - match:
+        all:
+          - resources:
+              kinds:
+                - rbac.authorization.k8s.io/v1/ClusterRoleBinding
+              names:
+                - system:build-strategy-docker-binding
+      mutate:
+        patchStrategicMerge:
+          annotations:
+            rbac.authorization.kubernetes.io/autoupdate: 'false'
+      name: clusterrolebinding-system-build-7d296671e024f88

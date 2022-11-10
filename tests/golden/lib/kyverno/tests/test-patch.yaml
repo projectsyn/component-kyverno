@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations: {}
+  labels:
+    name: foo-test-1484a32d04977ec
+  name: foo-test-1484a32d04977ec
+spec:
+  rules:
+    - match:
+        all:
+          - resources:
+              kinds:
+                - apps/v1/Deployment
+              names:
+                - test
+              namespaces:
+                - foo
+      mutate:
+        patchStrategicMerge:
+          spec:
+            replicas: 5
+      name: foo-test-1484a32d04977ec
