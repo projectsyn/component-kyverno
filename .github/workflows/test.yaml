@@ -34,6 +34,7 @@ jobs:
         instance:
           - defaults
           - policies
+          - lib
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
@@ -61,6 +62,7 @@ jobs:
         instance:
           - defaults
           - policies
+          - lib
     defaults:
       run:
         working-directory: ${{ env.COMPONENT_NAME }}
