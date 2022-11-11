@@ -6,6 +6,8 @@ metadata:
     name: foo-test-2647e277de7e28f
   name: foo-test-2647e277de7e28f
 spec:
+  background: true
+  mutateExistingOnPolicyUpdate: true
   rules:
     - match:
         all:

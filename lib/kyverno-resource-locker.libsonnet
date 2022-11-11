@@ -68,6 +68,8 @@ local Patch(targetobj, patchTemplate, patchStrategy='application/strategic-merge
   [
     kyverno.ClusterPolicy(name) {
       spec: {
+        mutateExistingOnPolicyUpdate: true,
+        background: true,
         rules: [ {
           name: name,
           match: {

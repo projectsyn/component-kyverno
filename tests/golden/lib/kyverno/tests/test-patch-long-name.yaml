@@ -6,6 +6,8 @@ metadata:
     name: clusterrolebinding-system-build-7d296671e024f88
   name: clusterrolebinding-system-build-7d296671e024f88
 spec:
+  background: true
+  mutateExistingOnPolicyUpdate: true
   rules:
     - match:
         all:
