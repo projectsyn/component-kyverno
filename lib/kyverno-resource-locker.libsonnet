@@ -70,38 +70,40 @@ local Patch(targetobj, patchTemplate, patchStrategy='application/strategic-merge
     [if std.objectHas(obj.metadata, 'namespace') && obj.metadata.namespace != null then 'namespaces']: [ obj.metadata.namespace ],
     names: [ obj.metadata.name ],
   };
-  local triggerResource = kube.ConfigMap('%s-trigger' % name) {
-    metadata+: {
-      namespace: namespace,
-      annotations+: {
-        'syn.tools/patch-md5': std.md5(patchTemplate + patchStrategy),
-      },
+  local rule = {
+    match: {
+      any: [
+        { resources: asFilter(targetobj) },
+      ],
+    },
+    mutate: {
+      patchStrategicMerge: patchTemplate,
     },
   };
+  local target = {
+    apiVersion: targetobj.apiVersion,
+    kind: targetobj.kind,
+    name: targetobj.metadata.name,
+    namespace: if std.objectHas(targetobj.metadata, 'namespace') then targetobj.metadata.namespace,
+  };
   [
-    triggerResource,
     kyverno.ClusterPolicy(name) {
       spec: {
         mutateExistingOnPolicyUpdate: true,
         background: true,
-        rules: [ {
-          name: name,
-          match: {
-            any: [
-              { resources: asFilter(targetobj) },
-              { resources: asFilter(targetobj) },
-            ],
+        rules: [
+          // This rule updates the target object on change of this policy.
+          // It adds the `.mutate.targets` field to the object which allows Kyverno to update existing objects.
+          rule {
+            name: 'change-existing',
+            mutate+: { targets: [ target ] },
           },
-          mutate: {
-            targets: [ {
-              apiVersion: targetobj.apiVersion,
-              kind: targetobj.kind,
-              name: targetobj.metadata.name,
-              namespace: if std.objectHas(targetobj.metadata, 'namespace') then targetobj.metadata.namespace,
-            } ],
-            patchStrategicMerge: patchTemplate,
+          // This rule creates a admission webhook for the target object. e.g. overrides changes
+          // It does not have a `.mutate.targets` field, as this blocks Kyverno from creating the webhook to block changes.
+          rule {
+            name: 'webhook',
           },
-        } ],
+        ],
       },
     },
   ];
