@@ -1,3 +1,14 @@
+apiVersion: v1
+data: {}
+kind: ConfigMap
+metadata:
+  annotations:
+    syn.tools/patch-md5: a7346be65023f6f43dd983ebfcb3b86f
+  labels:
+    name: clusterrolebinding-system-build-7d296671e024f88-trigger
+  name: clusterrolebinding-system-build-7d296671e024f88-trigger
+  namespace: syn-kyverno
+---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -10,7 +21,12 @@ spec:
   mutateExistingOnPolicyUpdate: true
   rules:
     - match:
-        all:
+        any:
+          - resources:
+              kinds:
+                - rbac.authorization.k8s.io/v1/ClusterRoleBinding
+              names:
+                - system:build-strategy-docker-binding
           - resources:
               kinds:
                 - rbac.authorization.k8s.io/v1/ClusterRoleBinding
@@ -20,4 +36,9 @@ spec:
         patchStrategicMerge:
           annotations:
             rbac.authorization.kubernetes.io/autoupdate: 'false'
+        targets:
+          - apiVersion: rbac.authorization.k8s.io/v1
+            kind: ClusterRoleBinding
+            name: system:build-strategy-docker-binding
+            namespace: null
       name: clusterrolebinding-system-build-7d296671e024f88

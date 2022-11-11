@@ -65,7 +65,21 @@ local patchName(targetObj) =
 
 local Patch(targetobj, patchTemplate, patchStrategy='application/strategic-merge-patch+json') =
   local name = patchName(targetobj);
+  local asFilter = function(obj) {
+    kinds: [ '%s/%s' % [ obj.apiVersion, obj.kind ] ],
+    [if std.objectHas(obj.metadata, 'namespace') && obj.metadata.namespace != null then 'namespaces']: [ obj.metadata.namespace ],
+    names: [ obj.metadata.name ],
+  };
+  local triggerResource = kube.ConfigMap('%s-trigger' % name) {
+    metadata+: {
+      namespace: namespace,
+      annotations+: {
+        'syn.tools/patch-md5': std.md5(patchTemplate + patchStrategy),
+      },
+    },
+  };
   [
+    triggerResource,
     kyverno.ClusterPolicy(name) {
       spec: {
         mutateExistingOnPolicyUpdate: true,
@@ -73,15 +87,18 @@ local Patch(targetobj, patchTemplate, patchStrategy='application/strategic-merge
         rules: [ {
           name: name,
           match: {
-            all: [ {
-              resources: {
-                kinds: [ '%s/%s' % [ targetobj.apiVersion, targetobj.kind ] ],
-                [if std.objectHas(targetobj.metadata, 'namespace') && targetobj.metadata.namespace != null then 'namespaces']: [ targetobj.metadata.namespace ],
-                names: [ targetobj.metadata.name ],
-              },
-            } ],
+            any: [
+              { resources: asFilter(targetobj) },
+              { resources: asFilter(targetobj) },
+            ],
           },
           mutate: {
+            targets: [ {
+              apiVersion: targetobj.apiVersion,
+              kind: targetobj.kind,
+              name: targetobj.metadata.name,
+              namespace: if std.objectHas(targetobj.metadata, 'namespace') then targetobj.metadata.namespace,
+            } ],
             patchStrategicMerge: patchTemplate,
           },
         } ],

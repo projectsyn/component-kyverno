@@ -1,3 +1,14 @@
+apiVersion: v1
+data: {}
+kind: ConfigMap
+metadata:
+  annotations:
+    syn.tools/patch-md5: 78600a906bbd76da5cd444bce3762036
+  labels:
+    name: foo-test-1484a32d04977ec-trigger
+  name: foo-test-1484a32d04977ec-trigger
+  namespace: syn-kyverno
+---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -10,7 +21,14 @@ spec:
   mutateExistingOnPolicyUpdate: true
   rules:
     - match:
-        all:
+        any:
+          - resources:
+              kinds:
+                - apps/v1/Deployment
+              names:
+                - test
+              namespaces:
+                - foo
           - resources:
               kinds:
                 - apps/v1/Deployment
@@ -22,4 +40,9 @@ spec:
         patchStrategicMerge:
           spec:
             replicas: 5
+        targets:
+          - apiVersion: apps/v1
+            kind: Deployment
+            name: test
+            namespace: foo
       name: foo-test-1484a32d04977ec
