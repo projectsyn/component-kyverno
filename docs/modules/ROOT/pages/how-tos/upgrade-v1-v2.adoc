@@ -1,0 +1,97 @@
+= Upgrade from 1.x to 2.x
+
+This guide describes the steps to perform an upgrade of the component from version `1.x` to `2.x`.
+
+With version `v2.0`, the component installs https://github.com/kyverno/kyverno/releases/tag/v1.8.0[Kyverno `v1.8+`].
+The release `v1.8.0` comes with significant internal changes, and we noticed at least two breaking changes.
+We strongly advise to thoroughly test every policy after the upgrade.
+
+NOTE: Please consider appending any additional breaking changes you encountered.
+We believe it's likely that there are more subtle changes.
+
+=== Breaking Changes
+
+
+==== Unresolved JMESPath expressions
+
+Until Kyverno `v1.7.3` unresolved JMESPath expressions evaluated to an empty string.
+With Kyverno `v1.8.0` it will now evaluate to `null`.
+
+This impacts policies that look similar to the following:
+
+[source,yaml]
+----
+  ...
+  mutate:
+    patchStrategicMerge:
+      metadata:
+        labels:
+          buzz: '{{ foo.bar }}'
+  ...
+----
+
+For Kyverno `v1.7.3`, if `foo.bar` doesn't exist, this mutate block will set the label `buzz` to an empty string.
+With Kyverno `v1.8.0+` it will now set it to `null`, which will result in an error.
+
+To restore the old behavior you should use a non-existence check in the form of the OR expression followed by a default value if the field doesn't exist
+
+[source,yaml]
+----
+  ...
+  mutate:
+    patchStrategicMerge:
+      metadata:
+        labels:
+          buzz: '{{ foo.bar || "" }}'
+  ...
+----
+
+
+==== Exlude Roles, ClusterRoles and Subjects
+
+Until Kyverno `v1.7.3` if you directly use the deprecated `exclude` key to exclude a subject or role from a policy, the rule will be skipped if the request either has one of the provided roles or if one of the provided subjects.
+With Kyverno `v1.8.0` the requester now needs to both be one of the subjects and have one of the provided roles.
+
+
+This impacts policies that look similar to the following:
+
+
+[source,yaml]
+----
+  ...
+  exclude:
+    clusterRoles:
+      - cluster-admin
+      - fooer
+    subjects:
+      - kind: ServiceAccount
+        name: foo
+        namespace: bar
+      - kind: ServiceAccount
+        name: foo
+        namespace: buzz
+  ...
+----
+
+With Kyverno `<v1.8.0` this will skill the policy if the requester either is a ServiceAccount `foo` in namespace `bar` or `buzz`, OR it has the ClusterRole `cluster-admin` or `fooer`.
+With Kyverno `v1.8.0+` it needs to both be a ServiceAccount `foo` in namespace `bar` or `buzz`, And have the ClusterRole `cluster-admin` or `fooer`.
+
+To restore the old behavior you should use the `any` key.
+
+[source,yaml]
+----
+  ...
+  exclude:
+    any:
+      - clusterRoles:
+          - cluster-admin
+          - fooer
+      - subjects:
+          - kind: ServiceAccount
+            name: foo
+            namespace: bar
+          - kind: ServiceAccount
+            name: foo
+            namespace: buzz
+  ...
+----
