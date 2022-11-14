@@ -67,6 +67,7 @@ com.Kustomization(
     ],
     transformers: [
       'labels.yaml',
+      'crdAnnotations.yaml',
     ],
     patchesStrategicMerge: [
       'deployment.yaml',
@@ -129,6 +130,25 @@ com.Kustomization(
       {
         kind: 'Deployment',
         path: 'spec/template/metadata/labels',
+        create: true,
+      },
+    ],
+  },
+  crdAnnotations: {
+    apiVersion: 'builtin',
+    kind: 'AnnotationsTransformer',
+    metadata: {
+      name: 'crdAnnotationsTransformer',
+    },
+    annotations: {
+      // Use replace for CRDs to avoid errors because the
+      // last-applied-configuration annotation gets too big.
+      'argocd.argoproj.io/sync-options': 'Replace=true',
+    },
+    fieldSpecs: [
+      {
+        kind: 'CustomResourceDefinition',
+        path: 'metadata/annotations',
         create: true,
       },
     ],
