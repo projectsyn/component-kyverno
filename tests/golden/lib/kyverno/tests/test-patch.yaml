@@ -41,4 +41,5 @@ spec:
         patchStrategicMerge:
           spec:
             replicas: 5
+        targets: []
       name: webhook

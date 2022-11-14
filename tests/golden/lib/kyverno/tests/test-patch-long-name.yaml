@@ -37,4 +37,5 @@ spec:
         patchStrategicMerge:
           annotations:
             rbac.authorization.kubernetes.io/autoupdate: 'false'
+        targets: []
       name: webhook

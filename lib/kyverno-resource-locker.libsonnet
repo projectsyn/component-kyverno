@@ -78,6 +78,8 @@ local Patch(targetobj, patchTemplate, patchStrategy='application/strategic-merge
     },
     mutate: {
       patchStrategicMerge: patchTemplate,
+      // Kyverno crashes if this is not set to an empty array.
+      targets: [],
     },
   };
   local target = {
