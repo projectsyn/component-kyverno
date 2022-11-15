@@ -73,8 +73,8 @@ This impacts policies that look similar to the following:
   ...
 ----
 
-With Kyverno `<v1.8.0` this will skill the policy if the requester either is a ServiceAccount `foo` in namespace `bar` or `buzz`, OR it has the ClusterRole `cluster-admin` or `fooer`.
-With Kyverno `v1.8.0+` it needs to both be a ServiceAccount `foo` in namespace `bar` or `buzz`, And have the ClusterRole `cluster-admin` or `fooer`.
+With Kyverno `<v1.8.0` this will skip the policy if the requester either is a ServiceAccount `foo` in namespace `bar` or `buzz`, OR it has the ClusterRole `cluster-admin` or `fooer`.
+With Kyverno `v1.8.0+` the policy is only skipped if the principal for the request is ServiceAccount `foo` in namespace `bar` or `buzz`, and that ServiceAccount has the ClusterRole `cluster-admin` or `fooer`.
 
 To restore the old behavior you should use the `any` key.
 
