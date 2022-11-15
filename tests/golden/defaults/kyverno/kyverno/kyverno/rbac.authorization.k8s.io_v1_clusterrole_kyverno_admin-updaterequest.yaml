@@ -9,13 +9,12 @@ metadata:
     app.kubernetes.io/part-of: kyverno
     app.kubernetes.io/version: v1.8.1
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
-  name: kyverno:admin-policies
+  name: kyverno:admin-updaterequest
 rules:
 - apiGroups:
   - kyverno.io
   resources:
-  - policies
-  - clusterpolicies
+  - updaterequests
   verbs:
   - create
   - delete

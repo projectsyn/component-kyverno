@@ -1,8 +1,12 @@
 * xref:index.adoc[Home]
 
+* xref:how-tos/upgrade-v1-v2.adoc[Upgrade 1.x to 2.x]
+
 .Alert runbooks
 * xref:runbooks/KyvernoAdmissionLatencyReachedWebhookTimeout.adoc[KyvernoAdmissionLatencyReachedWebhookTimeout]
 * xref:runbooks/KyvernoAverageAdmissionLatencyHigh.adoc[KyvernoAverageAdmissionLatencyHigh]
 
 .Technical reference
 * xref:references/parameters.adoc[Parameters]
+
+

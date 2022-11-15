@@ -65,6 +65,10 @@ com.Kustomization(
         count: params.replicas,
       },
     ],
+    transformers: [
+      'labels.yaml',
+      'crdAnnotations.yaml',
+    ],
     patchesStrategicMerge: [
       'deployment.yaml',
       'namespace.yaml',
@@ -108,5 +112,45 @@ com.Kustomization(
       },
       annotations+: nodeSelectionNamespaceAnnotations,
     },
+  },
+  labels: {
+    apiVersion: 'builtin',
+    kind: 'LabelTransformer',
+    metadata: {
+      name: 'labelTransformer',
+    },
+    labels: {
+      'app.kubernetes.io/version': params.manifest_version,
+    },
+    fieldSpecs: [
+      {
+        path: 'metadata/labels',
+        create: true,
+      },
+      {
+        kind: 'Deployment',
+        path: 'spec/template/metadata/labels',
+        create: true,
+      },
+    ],
+  },
+  crdAnnotations: {
+    apiVersion: 'builtin',
+    kind: 'AnnotationsTransformer',
+    metadata: {
+      name: 'crdAnnotationsTransformer',
+    },
+    annotations: {
+      // Use replace for CRDs to avoid errors because the
+      // last-applied-configuration annotation gets too big.
+      'argocd.argoproj.io/sync-options': 'Replace=true',
+    },
+    fieldSpecs: [
+      {
+        kind: 'CustomResourceDefinition',
+        path: 'metadata/annotations',
+        create: true,
+      },
+    ],
   },
 }
