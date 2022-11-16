@@ -1,5 +1,10 @@
 parameters:
   kyverno:
+    _metadata:
+      replaces: resource-locker
+      library_aliases:
+        resource-locker.libjsonnet: kyverno-resource-locker-migrate.libsonnet
+
     namespace: syn-kyverno
     images:
       kyverno:

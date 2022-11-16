@@ -1,0 +1,47 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations: {}
+  labels:
+    name: foo-test-124e2e3e489a95e
+  name: foo-test-124e2e3e489a95e
+spec:
+  background: true
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - rbac.authorization.k8s.io/v1/Role
+              names:
+                - test
+              namespaces:
+                - foo
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              patched: ''
+        targets:
+          - apiVersion: rbac.authorization.k8s.io/v1
+            kind: Role
+            name: test
+            namespace: foo
+      name: change-existing
+    - match:
+        any:
+          - resources:
+              kinds:
+                - rbac.authorization.k8s.io/v1/Role
+              names:
+                - test
+              namespaces:
+                - foo
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              patched: ''
+        targets: []
+      name: webhook

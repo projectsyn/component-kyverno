@@ -58,3 +58,5 @@ local GenerateRequest(name) = kube._Object('kyverno.io/v1alpha1', 'GenerateReque
   ClusterReportChangeRequest: ClusterReportChangeRequest,
   GenerateRequest: GenerateRequest,
 }
++
+import 'kyverno-resource-locker.libsonnet'

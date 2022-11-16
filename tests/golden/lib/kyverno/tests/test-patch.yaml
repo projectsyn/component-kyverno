@@ -1,0 +1,45 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations: {}
+  labels:
+    name: foo-test-1484a32d04977ec
+  name: foo-test-1484a32d04977ec
+spec:
+  background: true
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - apps/v1/Deployment
+              names:
+                - test
+              namespaces:
+                - foo
+      mutate:
+        patchStrategicMerge:
+          spec:
+            replicas: 5
+        targets:
+          - apiVersion: apps/v1
+            kind: Deployment
+            name: test
+            namespace: foo
+      name: change-existing
+    - match:
+        any:
+          - resources:
+              kinds:
+                - apps/v1/Deployment
+              names:
+                - test
+              namespaces:
+                - foo
+      mutate:
+        patchStrategicMerge:
+          spec:
+            replicas: 5
+        targets: []
+      name: webhook

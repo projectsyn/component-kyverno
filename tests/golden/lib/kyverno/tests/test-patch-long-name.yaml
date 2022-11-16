@@ -1,0 +1,41 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations: {}
+  labels:
+    name: clusterrolebinding-system-build-7d296671e024f88
+  name: clusterrolebinding-system-build-7d296671e024f88
+spec:
+  background: true
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - rbac.authorization.k8s.io/v1/ClusterRoleBinding
+              names:
+                - system:build-strategy-docker-binding
+      mutate:
+        patchStrategicMerge:
+          annotations:
+            rbac.authorization.kubernetes.io/autoupdate: 'false'
+        targets:
+          - apiVersion: rbac.authorization.k8s.io/v1
+            kind: ClusterRoleBinding
+            name: system:build-strategy-docker-binding
+            namespace: null
+      name: change-existing
+    - match:
+        any:
+          - resources:
+              kinds:
+                - rbac.authorization.k8s.io/v1/ClusterRoleBinding
+              names:
+                - system:build-strategy-docker-binding
+      mutate:
+        patchStrategicMerge:
+          annotations:
+            rbac.authorization.kubernetes.io/autoupdate: 'false'
+        targets: []
+      name: webhook
