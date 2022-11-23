@@ -9,6 +9,13 @@ We strongly advise to thoroughly test every policy after the upgrade.
 NOTE: Please consider appending any additional breaking changes you encountered.
 We believe it's likely that there are more subtle changes.
 
+[TIP]
+====
+If you're upgrading to v2 on OpenShift 4.10, please make sure you're upgrading to at least `v2.1.0`.
+
+This version introduces component parameter `containerSecurityContext`, which needs to be set to `null` to ensure the Kyverno pods start on OpenShift 4.10.
+====
+
 === Breaking Changes
 
 
