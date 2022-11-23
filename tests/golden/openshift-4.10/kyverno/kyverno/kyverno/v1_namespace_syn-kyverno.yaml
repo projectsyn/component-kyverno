@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/node-selector: node-role.kubernetes.io/master=
+  labels:
+    SYNMonitoring: main
+    app: kyverno
+    app.kubernetes.io/component: kyverno
+    app.kubernetes.io/instance: kyverno
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    app.kubernetes.io/part-of: syn
+    app.kubernetes.io/version: v1.8.1
+    name: syn-kyverno
+    network-policies.syn.tools/no-defaults: "true"
+    network-policies.syn.tools/purge-defaults: "true"
+  name: syn-kyverno

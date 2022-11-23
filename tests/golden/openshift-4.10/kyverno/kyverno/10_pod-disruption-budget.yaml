@@ -1,0 +1,17 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: kyverno
+    app.kubernetes.io/part-of: syn
+    name: kyverno
+  name: kyverno
+  namespace: syn-kyverno
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: kyverno
+      app.kubernetes.io/name: kyverno
