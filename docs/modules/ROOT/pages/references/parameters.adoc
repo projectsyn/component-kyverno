@@ -103,6 +103,19 @@ extraArgs:
 
 Allows passing extra arguments to Kyverno.
 
+== `containerSecurityContext`
+
+[horizontal]
+type:: dict
+default:: `{}`
+
+This parameter allows customizing the container security context for the Kyverno deployment's containers (both init containers, and regular containers).
+By default, the security contexts present in the upstream Kustomization are used.
+
+On OpenShift 4.10 or older, where the upstream security context isn't compatible with the restricted SCC, you can provide `containerSecurityContext: null` to completely drop the upstream container security context.
+
+If a dict is provided, it's merged with the upstream security context using a standard Kustomize strategic merge patch.
+
 == `additionalClusterRoles`
 
 [horizontal]
