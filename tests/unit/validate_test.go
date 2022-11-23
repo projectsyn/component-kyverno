@@ -20,6 +20,7 @@ func skipValidation(path string) bool {
 	ignore := []*regexp.Regexp{
 		regexp.MustCompile(fmt.Sprintf("%s/00_crds", testPath)),
 		regexp.MustCompile(fmt.Sprintf("%s/10_monitoring", testPath)),
+		regexp.MustCompile(fmt.Sprintf("%s/10_pod-disruption-budget", testPath)),
 		regexp.MustCompile(fmt.Sprintf("%s/80_policies.yaml", testPath)),
 		regexp.MustCompile(`.*/apiextensions.k8s.io_v1_customresourcedefinition.*\.yaml`),
 	}
