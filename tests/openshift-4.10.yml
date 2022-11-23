@@ -1,0 +1,8 @@
+parameters:
+  kyverno:
+    containerSecurityContext: null
+  kapitan:
+    dependencies:
+      - type: https
+        source: https://raw.githubusercontent.com/appuio/component-openshift4-monitoring/v1.9.2/lib/prom.libsonnet
+        output_path: vendor/lib/prom.libsonnet

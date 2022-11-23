@@ -89,6 +89,7 @@ com.Kustomization(
               {
                 name: 'kyverno-pre',
                 resources: params.resources.pre,
+                securityContext: params.containerSecurityContext,
               },
             ],
             containers: [
@@ -96,6 +97,7 @@ com.Kustomization(
                 name: 'kyverno',
                 resources: params.resources.kyverno,
                 args: params.extraArgs,
+                securityContext: params.containerSecurityContext,
               },
             ],
           },

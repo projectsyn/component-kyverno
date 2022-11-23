@@ -121,3 +121,7 @@ parameters:
     generateSuccessEvents: 'false'
     # Pass extra args to the kyverno container
     extraArgs: []
+    # Configure custom security context for the kyverno containers.
+    # Setting the parameter to null will clear the security context for
+    # OpenShift <= 4.10.
+    containerSecurityContext: {}
