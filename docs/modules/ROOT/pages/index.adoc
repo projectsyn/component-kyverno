@@ -2,4 +2,11 @@
 
 kyverno is a Commodore component to manage kyverno.
 
+== Aggregated cluster roles for the Kyverno CRDs
+
+Kyverno already brings `ClusterRole` objects to aggregate read-write permissions for its CRDs to the `admin` cluster role.
+However, upstream doesn't provide `ClusterRole` objects to aggregate read-only permissions for the Kyverno CRDs to the `view` or `cluster-reader` cluster roles.
+
+To address this shortcoming, the component creates two `ClusterRole` objects, `syn-kyverno:aggregate-to-view` and `syn-kyverno:aggregate-to-cluster-reader` which aggregate read-only permissions to the `view` and `cluster-reader` cluster roles for namespaced and cluster-scoped Kyverno CRDs respectively.
+
 See the xref:references/parameters.adoc[parameters] reference for further details.
