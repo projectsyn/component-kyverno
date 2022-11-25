@@ -38,6 +38,7 @@ parameters:
         output_path: .
 
       - input_paths:
+          - kyverno/component/aggregated-clusterroles.jsonnet
           - kyverno/component/main.jsonnet
           - kyverno/component/rolebindings.jsonnet
           - kyverno/component/monitoring.jsonnet

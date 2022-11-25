@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations: {}
+  labels:
+    name: syn-kyverno-aggregate-to-view
+    rbac.authorization.k8s.io/aggregate-to-view: 'true'
+  name: syn-kyverno:aggregate-to-view
+rules:
+  - apiGroups:
+      - kyverno.io
+    resources:
+      - policies
+      - admissionreports
+      - backgroundscanreports
+      - generaterequests
+      - updaterequests
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - wgpolicy.k8s.io
+    resources:
+      - policyreports
+    verbs:
+      - get
+      - list
+      - watch
