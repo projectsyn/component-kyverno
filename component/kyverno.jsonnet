@@ -90,6 +90,7 @@ com.Kustomization(
                 name: 'kyverno-pre',
                 resources: params.resources.pre,
                 securityContext: params.containerSecurityContext,
+                imagePullPolicy: null,
               },
             ],
             containers: [
@@ -98,6 +99,7 @@ com.Kustomization(
                 resources: params.resources.kyverno,
                 args: params.extraArgs,
                 securityContext: params.containerSecurityContext,
+                imagePullPolicy: null,
               },
             ],
           },
