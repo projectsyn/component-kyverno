@@ -117,13 +117,15 @@ com.Kustomization(
       annotations+: nodeSelectionNamespaceAnnotations,
     },
   },
+  // Add labels to all resources
+  // This is a customized transformer to not update the selector of the deployment which would be a breaking change.
   labels: {
     apiVersion: 'builtin',
     kind: 'LabelTransformer',
     metadata: {
       name: 'labelTransformer',
     },
-    labels: {
+    labels: common.Labels {
       'app.kubernetes.io/version': params.manifest_version,
     },
     fieldSpecs: [
