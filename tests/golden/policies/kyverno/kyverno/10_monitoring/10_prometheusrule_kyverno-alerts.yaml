@@ -21,9 +21,12 @@ spec:
               (10s).
             runbook_url: https://hub.syn.tools/kyverno/runbooks/KyvernoAdmissionLatencyReachedWebhookTimeout.html
             summary: Kyverno admission too slow.
-          expr: "(\n  sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le=\"\
-            +Inf\"}[10m]))\n-\n  sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le=\"\
-            10\"}[10m]))\n) > 0\n"
+          expr: |
+            (
+              sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le="+Inf"}[10m]))
+            -
+              sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le="10"}[10m]))
+            ) > 0
           for: 5m
           labels:
             severity: warning
@@ -37,9 +40,12 @@ spec:
               reached 5 seconds in the last 10 minutes.
             runbook_url: https://hub.syn.tools/kyverno/runbooks/KyvernoAverageAdmissionLatencyHigh.html
             summary: Kyverno admission is slowing down.
-          expr: "(\n  sum by (job,resource_kind) (rate(kyverno_admission_review_duration_seconds_sum[5m]))\n\
-            /\n  sum by (job,resource_kind) (rate(kyverno_admission_review_duration_seconds_count[5m]))\n\
-            ) > 5\n"
+          expr: |
+            (
+              sum by (job,resource_kind) (rate(kyverno_admission_review_duration_seconds_sum[5m]))
+            /
+              sum by (job,resource_kind) (rate(kyverno_admission_review_duration_seconds_count[5m]))
+            ) > 5
           for: 10m
           labels:
             severity: warning
