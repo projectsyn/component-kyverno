@@ -24,7 +24,7 @@ parameters:
       enabled: true
       alerts:
         KyvernoAverageAdmissionLatencyHigh:
-          enabled: true
+          enabled: false
           rule:
             annotations:
               description: Kyverno average admission latency for {{$labels.resouce_kind}} reached 5 seconds.
