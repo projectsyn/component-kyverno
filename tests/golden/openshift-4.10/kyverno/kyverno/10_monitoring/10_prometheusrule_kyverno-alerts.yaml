@@ -32,22 +32,3 @@ spec:
             severity: warning
             syn: 'true'
             syn_component: kyverno
-        - alert: KyvernoAverageAdmissionLatencyHigh
-          annotations:
-            description: Kyverno average admission latency for {{$labels.resouce_kind}}
-              reached 5 seconds.
-            message: Kyverno average admission latency for {{$labels.resouce_kind}}
-              reached 5 seconds in the last 10 minutes.
-            runbook_url: https://hub.syn.tools/kyverno/runbooks/KyvernoAverageAdmissionLatencyHigh.html
-            summary: Kyverno admission is slowing down.
-          expr: |
-            (
-              sum by (job,resource_kind) (rate(kyverno_admission_review_duration_seconds_sum[5m]))
-            /
-              sum by (job,resource_kind) (rate(kyverno_admission_review_duration_seconds_count[5m]))
-            ) > 5
-          for: 10m
-          labels:
-            severity: warning
-            syn: 'true'
-            syn_component: kyverno
