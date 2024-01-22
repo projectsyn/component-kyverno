@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: syn
-    app.kubernetes.io/version: v1.8.4
+    app.kubernetes.io/version: v1.8.5
   name: policies.kyverno.io
 spec:
   group: kyverno.io
@@ -2756,6 +2756,8 @@ spec:
                                   description: PredicateType defines the type of Predicate
                                     contained within the Statement.
                                   type: string
+                              required:
+                              - predicateType
                               type: object
                             type: array
                           attestors:
@@ -5798,6 +5800,8 @@ spec:
                                       description: PredicateType defines the type
                                         of Predicate contained within the Statement.
                                       type: string
+                                  required:
+                                  - predicateType
                                   type: object
                                 type: array
                               attestors:
@@ -8596,6 +8600,8 @@ spec:
                                   description: PredicateType defines the type of Predicate
                                     contained within the Statement.
                                   type: string
+                              required:
+                              - predicateType
                               type: object
                             type: array
                           attestors:
@@ -11612,6 +11618,8 @@ spec:
                                       description: PredicateType defines the type
                                         of Predicate contained within the Statement.
                                       type: string
+                                  required:
+                                  - predicateType
                                   type: object
                                 type: array
                               attestors:
