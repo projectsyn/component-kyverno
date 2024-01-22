@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: syn
-    app.kubernetes.io/version: v1.8.4
+    app.kubernetes.io/version: v1.8.5
   name: generaterequests.kyverno.io
 spec:
   group: kyverno.io
