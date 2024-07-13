@@ -95,10 +95,10 @@ spec:
           timeoutSeconds: 5
         resources:
           limits:
-            memory: 512Mi
+            memory: 1Gi
           requests:
             cpu: 100m
-            memory: 50Mi
+            memory: 512Mi
         startupProbe:
           failureThreshold: 20
           httpGet:
