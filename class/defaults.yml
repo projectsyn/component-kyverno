@@ -1,5 +1,7 @@
 parameters:
   kyverno:
+    =_metadata:
+      multi_tenant: true
     namespace: syn-kyverno
     images:
       kyverno:
