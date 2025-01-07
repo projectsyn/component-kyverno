@@ -4,7 +4,7 @@ parameters:
       - input_paths:
           - kyverno/component/app.jsonnet
         input_type: jsonnet
-        output_path: apps/
+        output_path: .
 
       # render kustomization overlay
       - input_paths:
