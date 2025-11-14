@@ -25,7 +25,7 @@ spec:
             (
               sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le="+Inf"}[10m]))
             -
-              sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le="10"}[10m]))
+              sum by(resource_kind, resource_namespace) (increase(kyverno_admission_review_duration_seconds_bucket{le=~"10(\\.0)?"}[10m]))
             ) > 0
           for: 5m
           labels:
