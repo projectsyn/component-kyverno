@@ -44,7 +44,7 @@ format: format_jsonnet ## All-in-one formatting
 
 .PHONY: format_jsonnet
 format_jsonnet: $(JSONNET_FILES) ## Format jsonnet files
-	$(JSONNET_DOCKER) $(JSONNETFMT_ARGS) -- $?
+	$(JSONNET_DOCKER) $(JSONNETFMT_ARGS) --in-place -- $?
 
 .PHONY: docs-serve
 docs-serve: ## Preview the documentation
@@ -58,10 +58,6 @@ docs-serve: ## Preview the documentation
 .PHONY: test
 test: commodore_args += -f tests/$(instance).yml
 test: .compile ## Compile the component
-	@echo
-	@echo
-	@cd tests && go test -count 1 ./...
-
 .PHONY: gen-golden
 gen-golden: commodore_args += -f tests/$(instance).yml
 gen-golden: clean .compile ## Update the reference version for target `golden-diff`.
